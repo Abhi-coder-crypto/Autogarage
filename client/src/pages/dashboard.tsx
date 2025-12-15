@@ -95,7 +95,7 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="font-display text-3xl font-bold tracking-tight text-foreground" data-testid="text-dashboard-title">Dashboard</h1>
+          <h1 className="font-display text-3xl font-bold tracking-tight" data-testid="text-dashboard-title">Dashboard</h1>
           <p className="text-muted-foreground mt-1">Welcome back, Admin</p>
         </div>
         <Badge className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800 px-4 py-2 text-sm" data-testid="badge-current-shop">
