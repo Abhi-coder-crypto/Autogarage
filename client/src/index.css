@@ -46,51 +46,51 @@
 }
 
 :root {
-  /* Dark Mode Default for Garage Vibe */
-  --background: 0 0% 3.9%; /* Zinc 950 */
+  /* Red/Black/Grey Garage Theme with Better Contrast */
+  --background: 0 0% 12%; /* Charcoal grey - lighter than before */
   --foreground: 0 0% 98%;
 
-  --card: 0 0% 9%; /* Zinc 900 */
+  --card: 0 0% 16%; /* Lighter card for contrast */
   --card-foreground: 0 0% 98%;
 
-  --popover: 0 0% 9%;
+  --popover: 0 0% 14%;
   --popover-foreground: 0 0% 98%;
 
-  --primary: 0 84.2% 60.2%; /* Red 500/600 hybrid */
-  --primary-foreground: 0 0% 98%;
+  --primary: 0 72% 51%; /* Vibrant red #dc2626 */
+  --primary-foreground: 0 0% 100%;
 
-  --secondary: 0 0% 14.9%;
+  --secondary: 0 0% 22%; /* Lighter grey */
   --secondary-foreground: 0 0% 98%;
 
-  --muted: 0 0% 14.9%;
-  --muted-foreground: 0 0% 63.9%;
+  --muted: 0 0% 20%;
+  --muted-foreground: 0 0% 65%;
 
-  --accent: 0 0% 14.9%;
+  --accent: 0 0% 20%;
   --accent-foreground: 0 0% 98%;
 
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 0 0% 98%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
 
-  --border: 0 0% 14.9%;
-  --input: 0 0% 14.9%;
-  --ring: 0 84.2% 60.2%;
+  --border: 0 0% 25%; /* More visible borders */
+  --input: 0 0% 20%;
+  --ring: 0 72% 51%;
 
   --radius: 0.5rem;
 
-  --chart-1: 0 84.2% 60.2%; /* Red */
-  --chart-2: 0 0% 25%; /* Dark Gray */
-  --chart-3: 0 0% 45%; /* Mid Gray */
-  --chart-4: 0 0% 65%; /* Light Gray */
-  --chart-5: 0 0% 85%; /* White-ish */
+  --chart-1: 0 72% 51%; /* Red */
+  --chart-2: 0 0% 30%; /* Dark Gray */
+  --chart-3: 0 0% 50%; /* Mid Gray */
+  --chart-4: 0 0% 70%; /* Light Gray */
+  --chart-5: 0 0% 90%; /* White-ish */
 
-  --sidebar: 0 0% 6%; /* Slightly darker than card */
+  --sidebar: 0 0% 8%; /* Dark sidebar for contrast */
   --sidebar-foreground: 0 0% 98%;
-  --sidebar-primary: 0 84.2% 60.2%;
-  --sidebar-primary-foreground: 0 0% 98%;
-  --sidebar-accent: 0 0% 14.9%;
+  --sidebar-primary: 0 72% 51%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 0 0% 16%;
   --sidebar-accent-foreground: 0 0% 98%;
-  --sidebar-border: 0 0% 14.9%;
-  --sidebar-ring: 0 84.2% 60.2%;
+  --sidebar-border: 0 0% 20%;
+  --sidebar-ring: 0 72% 51%;
 }
 
 @layer base {

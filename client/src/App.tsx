@@ -11,6 +11,7 @@ import Technicians from "@/pages/technicians";
 import Inventory from "@/pages/inventory";
 import Appointments from "@/pages/appointments";
 import WhatsApp from "@/pages/whatsapp";
+import Settings from "@/pages/settings";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -24,6 +25,7 @@ function Router() {
         <Route path="/inventory" component={Inventory} />
         <Route path="/appointments" component={Appointments} />
         <Route path="/whatsapp" component={WhatsApp} />
+        <Route path="/settings" component={Settings} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
