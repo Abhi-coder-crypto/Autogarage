@@ -13,6 +13,7 @@ import { Plus, Package, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const CATEGORIES = ['PPF', 'Ceramic', 'Tools', 'Parts', 'Chemicals'];
+const UNITS = ['meter', 'feet', 'piece', 'kg', 'gram', 'liter', 'ml', 'roll', 'box', 'set'];
 
 const CATEGORY_COLORS: Record<string, string> = {
   'PPF': 'bg-blue-500/20 text-blue-400',
@@ -136,8 +137,17 @@ export default function Inventory() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Unit *</Label>
-                  <Input name="unit" required placeholder="e.g., meters, pcs" data-testid="input-unit" />
+                  <Label>Unit (measurement type) *</Label>
+                  <Select name="unit" required>
+                    <SelectTrigger data-testid="select-unit">
+                      <SelectValue placeholder="Select unit" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {UNITS.map(unit => (
+                        <SelectItem key={unit} value={unit}>{unit}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
