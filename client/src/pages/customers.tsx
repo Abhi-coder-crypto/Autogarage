@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Search, User, Phone, Car, ChevronRight, MapPin } from 'lucide-react';
+import { Plus, Search, User, Phone, Car, ChevronRight, MapPin, Wrench } from 'lucide-react';
 import { Link } from 'wouter';
 
 const CUSTOMER_STATUSES = ['Inquired', 'Working', 'Waiting', 'Completed'];
@@ -81,6 +81,7 @@ export default function Customers() {
       email: formData.get('email') as string || undefined,
       address: formData.get('address') as string || undefined,
       status: newCustomerStatus,
+      service: formData.get('service') as string,
       vehicles: [{
         make: formData.get('vehicleMake') as string,
         model: formData.get('vehicleModel') as string,
@@ -122,8 +123,8 @@ export default function Customers() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-bold tracking-tight">Customers</h1>
-          <p className="text-muted-foreground mt-1">Manage customer records and vehicles</p>
+          <h1 className="font-display text-3xl font-bold tracking-tight">Customers & Services</h1>
+          <p className="text-muted-foreground mt-1">Manage customer records, vehicles, and services</p>
         </div>
         
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -170,6 +171,11 @@ export default function Customers() {
                     </SelectContent>
                   </Select>
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Service Required *</Label>
+                <Input name="service" required placeholder="e.g., PPF, Ceramic Coating, Denting" data-testid="input-customer-service" />
               </div>
 
               <div className="border-t pt-4">
@@ -271,6 +277,13 @@ export default function Customers() {
                     </SelectContent>
                   </Select>
                 </div>
+
+                {customer.service && (
+                  <div className="flex items-center gap-2 p-2 bg-blue-50 rounded-lg border border-blue-200">
+                    <Wrench className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-medium text-blue-700">{customer.service}</span>
+                  </div>
+                )}
 
                 {customer.address && (
                   <p className="text-sm text-muted-foreground flex items-center gap-1">

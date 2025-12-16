@@ -7,14 +7,13 @@ const navItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/register', label: 'Register Customers', icon: UserPlus },
   { href: '/funnel', label: 'Customers Funnel', icon: Filter },
-  { href: '/customers', label: 'Customers', icon: Users },
+  { href: '/customers', label: 'Customers & Services', icon: Users },
   { href: '/jobs', label: 'Jobs', icon: Wrench },
   { href: '/technicians', label: 'Technicians', icon: UserCog },
   { href: '/billing', label: 'Billing & Invoice', icon: FileText },
   { href: '/payments', label: 'Payment Tracking', icon: CreditCard },
   { href: '/inventory', label: 'Inventory', icon: Package },
   { href: '/appointments', label: 'Appointments', icon: Calendar },
-  { href: '/whatsapp', label: 'WhatsApp', icon: MessageCircle },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
 

@@ -1,8 +1,59 @@
-import { WhatsAppTemplate, type JobStage } from './models';
+import { WhatsAppTemplate, type JobStage, type CustomerStatus } from './models';
+
+const STATUS_MESSAGES: Record<CustomerStatus, string> = {
+  'Inquired': 'Thank you for your inquiry! We have received your service request for {{service}}. Our team will contact you shortly.',
+  'Working': 'Work has started on your vehicle for {{service}}. We will keep you updated on the progress.',
+  'Waiting': 'Your vehicle service ({{service}}) is currently on hold. We will notify you once we resume work.',
+  'Completed': 'Great news! Your {{service}} service has been completed. Please visit us to collect your vehicle.'
+};
 
 export async function sendWhatsAppMessage(phone: string, message: string): Promise<boolean> {
-  console.log(`[WhatsApp] Sending message to ${phone}: ${message}`);
-  return true;
+  const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  const accessToken = process.env.WHATSAPP_ACCESS_TOKEN;
+  
+  if (!phoneNumberId || !accessToken) {
+    console.log(`[WhatsApp] API not configured. Message: ${phone}: ${message}`);
+    return false;
+  }
+  
+  try {
+    const response = await fetch(`https://graph.facebook.com/v18.0/${phoneNumberId}/messages`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messaging_product: 'whatsapp',
+        to: phone.replace(/[^0-9]/g, ''),
+        type: 'text',
+        text: { body: message }
+      })
+    });
+    
+    if (response.ok) {
+      console.log(`[WhatsApp] Message sent to ${phone}`);
+      return true;
+    } else {
+      const error = await response.text();
+      console.error(`[WhatsApp] Failed to send message: ${error}`);
+      return false;
+    }
+  } catch (error) {
+    console.error('[WhatsApp] Error sending message:', error);
+    return false;
+  }
+}
+
+export async function sendCustomerStatusUpdate(phone: string, status: CustomerStatus, service?: string): Promise<boolean> {
+  const messageTemplate = STATUS_MESSAGES[status];
+  if (!messageTemplate) {
+    console.log(`[WhatsApp] No template for status: ${status}`);
+    return false;
+  }
+  
+  const message = messageTemplate.replace(/\{\{service\}\}/g, service || 'your vehicle');
+  return sendWhatsAppMessage(phone, message);
 }
 
 export async function sendStageUpdateMessage(phone: string, stage: JobStage, vehicleName: string, plateNumber: string): Promise<boolean> {

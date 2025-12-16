@@ -59,6 +59,7 @@ export default function CustomerRegistration() {
     state: "Maharashtra",
     referralSource: "",
     status: "Inquired",
+    service: "",
   });
 
   // Vehicle info
@@ -91,6 +92,7 @@ export default function CustomerRegistration() {
       email: customerData.email || undefined,
       address: `${customerData.address}, ${customerData.city}, ${customerData.district}, ${customerData.state}`,
       status: customerData.status,
+      service: customerData.service || undefined,
       vehicles: [
         {
           make: vehicleData.make,
@@ -291,6 +293,21 @@ export default function CustomerRegistration() {
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div className="md:col-span-2 space-y-2">
+                  <Label>Service Required *</Label>
+                  <Input
+                    value={customerData.service}
+                    onChange={(e) =>
+                      setCustomerData({
+                        ...customerData,
+                        service: e.target.value,
+                      })
+                    }
+                    placeholder="e.g., PPF, Ceramic Coating, Denting, Paint"
+                    data-testid="input-service"
+                  />
                 </div>
 
                 <div className="md:col-span-2 space-y-2">
