@@ -90,7 +90,7 @@ export default function ServiceFunnel() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {SERVICE_STAGES.map(stage => (
+        {activeStages.map(stage => (
           <Card key={stage} className={cn("border", STAGE_BG_COLORS[stage])}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -183,7 +183,7 @@ export default function ServiceFunnel() {
                             <MessageCircle className="w-5 h-5 text-green-500" />
                           </div>
 
-                          <Link href={`/jobs/${job._id}`}>
+                          <Link href="/jobs">
                             <Button variant="ghost" size="icon">
                               <ChevronRight className="w-5 h-5" />
                             </Button>
@@ -198,9 +198,9 @@ export default function ServiceFunnel() {
           ))}
 
           {(groupedJobs['Completed']?.length > 0 || groupedJobs['Cancelled']?.length > 0) && (
-            <Card className="border-border">
+            <Card className="border-border bg-muted/30">
               <CardHeader>
-                <CardTitle>Completed & Cancelled</CardTitle>
+                <CardTitle className="text-muted-foreground">Completed & Cancelled</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {[...groupedJobs['Completed'] || [], ...groupedJobs['Cancelled'] || []].map((job: any) => (
@@ -219,8 +219,23 @@ export default function ServiceFunnel() {
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
-                      <Badge className={STAGE_COLORS[job.stage]}>{job.stage}</Badge>
-                      <Link href={`/jobs/${job._id}`}>
+                      <Select
+                        value={job.stage}
+                        onValueChange={(newStage) => updateStageMutation.mutate({ id: job._id, stage: newStage })}
+                      >
+                        <SelectTrigger 
+                          className={cn("w-44", STAGE_COLORS[job.stage])}
+                          data-testid={`stage-select-${job._id}`}
+                        >
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {SERVICE_STAGES.map(s => (
+                            <SelectItem key={s} value={s}>{s}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Link href="/jobs">
                         <Button variant="ghost" size="icon">
                           <ChevronRight className="w-5 h-5" />
                         </Button>

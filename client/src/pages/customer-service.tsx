@@ -19,6 +19,7 @@ export default function CustomerService() {
   
   const [selectedCustomerId, setSelectedCustomerId] = useState<string>('');
   const [selectedVehicleIndex, setSelectedVehicleIndex] = useState<string>('');
+  const [selectedTechnicianId, setSelectedTechnicianId] = useState<string>('');
   const [serviceNotes, setServiceNotes] = useState('');
   const [selectedItems, setSelectedItems] = useState<{ inventoryId: string; quantity: number; name: string; price: number }[]>([]);
   const [selectedItemId, setSelectedItemId] = useState<string>('');
@@ -69,6 +70,7 @@ export default function CustomerService() {
   const resetForm = () => {
     setSelectedCustomerId('');
     setSelectedVehicleIndex('');
+    setSelectedTechnicianId('');
     setServiceNotes('');
     setSelectedItems([]);
     setSelectedItemId('');
@@ -142,12 +144,16 @@ export default function CustomerService() {
 
     const totalAmount = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
+    const selectedTechnician = technicians.find((t: any) => t._id === selectedTechnicianId);
+    
     createJobMutation.mutate({
       customerId: selectedCustomerId,
       vehicleIndex: vehicleIdx,
       customerName: customer.name,
       vehicleName: `${vehicle.make} ${vehicle.model}`.trim() || vehicle.model,
       plateNumber: vehicle.plateNumber,
+      technicianId: selectedTechnicianId || undefined,
+      technicianName: selectedTechnician?.name,
       notes: serviceNotes,
       stage: 'New Lead',
       serviceItems: [],
@@ -217,6 +223,25 @@ export default function CustomerService() {
                     </Select>
                   </div>
                 )}
+
+                <div className="space-y-2">
+                  <Label>Assign Technician</Label>
+                  <Select value={selectedTechnicianId} onValueChange={setSelectedTechnicianId}>
+                    <SelectTrigger data-testid="select-technician">
+                      <SelectValue placeholder="Select a technician (optional)" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {technicians.map((tech: any) => (
+                        <SelectItem key={tech._id} value={tech._id}>
+                          <div className="flex items-center gap-2">
+                            <User className="w-4 h-4" />
+                            {tech.name} - {tech.specialty}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
                 <div className="space-y-2">
                   <Label>Service Notes</Label>

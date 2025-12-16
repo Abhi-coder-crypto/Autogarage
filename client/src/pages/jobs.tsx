@@ -315,11 +315,6 @@ export default function Jobs() {
                       </SelectContent>
                     </Select>
                     
-                    <Link href={`/jobs/${job._id}`}>
-                      <Button variant="ghost" size="icon" data-testid={`button-view-job-${job._id}`}>
-                        <ChevronRight className="w-5 h-5" />
-                      </Button>
-                    </Link>
                   </div>
                 </div>
 

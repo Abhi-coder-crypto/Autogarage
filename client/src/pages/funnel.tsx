@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, Edit, Clock, User, Car, Calendar, Phone, MapPin } from "lucide-react";
+import { Eye, Wrench, Clock, User, Car, Calendar, Phone, MapPin } from "lucide-react";
 import { Link } from "wouter";
 import {
   Dialog,
@@ -199,14 +199,14 @@ export default function CustomerFunnel() {
                               <Eye className="w-4 h-4 mr-1" />
                               View Details
                             </Button>
-                            <Link href={`/customers/${customer._id}`} className="flex-1">
+                            <Link href="/customer-service" className="flex-1">
                               <Button
                                 size="sm"
                                 className="w-full bg-blue-500 hover:bg-blue-600"
-                                data-testid={`button-history-${customer._id}`}
+                                data-testid={`button-create-service-${customer._id}`}
                               >
-                                <Edit className="w-4 h-4 mr-1" />
-                                History
+                                <Wrench className="w-4 h-4 mr-1" />
+                                Create Service
                               </Button>
                             </Link>
                           </div>

@@ -7,7 +7,6 @@ const navItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/register', label: 'Register Customers', icon: UserPlus },
   { href: '/funnel', label: 'Customers Funnel', icon: Filter },
-  { href: '/customers', label: 'Customers', icon: Users },
   { href: '/customer-service', label: 'Customers Service', icon: Wrench },
   { href: '/service-funnel', label: 'Services Funnel', icon: Filter },
   { href: '/jobs', label: 'Jobs', icon: Wrench },
