@@ -45,7 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <p className="text-xs text-muted-foreground mt-1">CRM System</p>
           </div>
 
-          <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
+          <nav className="flex-1 p-3 space-y-0.5">
             {navItems.map((item) => {
               const isActive = location === item.href || (item.href !== '/' && location.startsWith(item.href));
               const Icon = item.icon;

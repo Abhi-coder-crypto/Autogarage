@@ -151,6 +151,64 @@ export default function Dashboard() {
         </div>
       </div>
 
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
+        <Card className="bg-blue-50 border-blue-200" data-testid="card-todays-sales">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-blue-600 font-medium">Today's Sales</p>
+                <p className="text-2xl font-bold text-blue-900 mt-1">₹{todaySales.toLocaleString()}</p>
+              </div>
+              <div className="p-3 bg-blue-100 rounded-lg">
+                <IndianRupee className="w-6 h-6 text-blue-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-yellow-50 border-yellow-200" data-testid="card-active-jobs-count">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-yellow-600 font-medium">Active Service Jobs</p>
+                <p className="text-2xl font-bold text-yellow-900 mt-1">{jobs.filter((j: any) => j.stage !== "Completed" && j.stage !== "Cancelled").length}</p>
+              </div>
+              <div className="p-3 bg-yellow-100 rounded-lg">
+                <Package className="w-6 h-6 text-yellow-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-orange-50 border-orange-200" data-testid="card-low-stock-count">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-orange-600 font-medium">Low Stock Items</p>
+                <p className="text-2xl font-bold text-orange-900 mt-1">{lowStock.length}</p>
+              </div>
+              <div className="p-3 bg-orange-100 rounded-lg">
+                <AlertTriangle className="w-6 h-6 text-orange-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-green-50 border-green-200" data-testid="card-total-customers">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-green-600 font-medium">Total Customers</p>
+                <p className="text-2xl font-bold text-green-900 mt-1">{customers.length}</p>
+              </div>
+              <div className="p-3 bg-green-100 rounded-lg">
+                <Users className="w-6 h-6 text-green-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       <div className="grid gap-4 lg:grid-cols-2">
         <Card
           className="border-border"
