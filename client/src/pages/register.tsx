@@ -41,6 +41,36 @@ const VEHICLE_TYPES = [
   "Other",
 ];
 
+const SERVICE_OPTIONS = {
+  ppf: {
+    label: "PPF Services",
+    options: [
+      "PPF - Elite TPU 5 Years (Gloss)",
+      "PPF - Elite TPU 5 Years (Matt)",
+      "PPF - Elite TPU 7 Years (Gloss)",
+      "PPF - Elite TPU 8 Years (Gloss)",
+      "PPF - Elite TPU 10 Years (Gloss)",
+      "PPF - Garware Plus",
+      "PPF - Garware Premium",
+      "PPF - Garware Matt",
+    ],
+  },
+  services: {
+    label: "Other Services",
+    options: [
+      "Foam Washing",
+      "Premium Washing",
+      "Interior Cleaning",
+      "Interior Steam Cleaning",
+      "Leather Treatment",
+      "Detailing",
+      "Paint Protection",
+      "Ceramic Coating",
+      "Denting & Painting",
+    ],
+  },
+};
+
 const validatePhone = (phone: string): boolean => {
   const phoneRegex = /^[0-9]{10}$/;
   return phoneRegex.test(phone.replace(/\s/g, ''));
@@ -290,17 +320,33 @@ export default function CustomerRegistration() {
 
                 <div className="md:col-span-2 space-y-2">
                   <Label>Service Required *</Label>
-                  <Input
+                  <Select
                     value={customerData.service}
-                    onChange={(e) =>
+                    onValueChange={(value) =>
                       setCustomerData({
                         ...customerData,
-                        service: e.target.value,
+                        service: value,
                       })
                     }
-                    placeholder="e.g., PPF, Ceramic Coating, Denting, Paint"
-                    data-testid="input-service"
-                  />
+                  >
+                    <SelectTrigger data-testid="select-service">
+                      <SelectValue placeholder="Select a service" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <div className="px-2 py-1.5 text-sm font-semibold text-blue-600">— {SERVICE_OPTIONS.ppf.label} —</div>
+                      {SERVICE_OPTIONS.ppf.options.map((service) => (
+                        <SelectItem key={service} value={service}>
+                          {service}
+                        </SelectItem>
+                      ))}
+                      <div className="px-2 py-1.5 text-sm font-semibold text-green-600 mt-2">— {SERVICE_OPTIONS.services.label} —</div>
+                      {SERVICE_OPTIONS.services.options.map((service) => (
+                        <SelectItem key={service} value={service}>
+                          {service}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="md:col-span-2 space-y-2">
