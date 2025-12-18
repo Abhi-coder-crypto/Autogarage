@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, Wrench, Phone, MapPin, Search, History, Car, Clock } from "lucide-react";
+import { Eye, Wrench, Phone, MapPin, Search, History, Car, Clock, Mail, Briefcase, DollarSign, Calendar } from "lucide-react";
 import { Link } from "wouter";
 import {
   Dialog,
@@ -260,36 +260,81 @@ export default function CustomerFunnel() {
           </DialogHeader>
           {selectedCustomer && (
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Name</p>
-                  <p className="font-medium">{selectedCustomer.name}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Phone</p>
-                  <p className="font-medium">{selectedCustomer.phone}</p>
-                </div>
-                {selectedCustomer.email && (
-                  <div>
-                    <p className="text-sm text-muted-foreground">Email</p>
-                    <p className="font-medium">{selectedCustomer.email}</p>
+              {/* Personal Information */}
+              <div>
+                <p className="text-sm font-semibold text-muted-foreground mb-3">Personal Information</p>
+                <div className="grid grid-cols-2 gap-4 p-3 bg-accent/30 rounded-lg space-y-3">
+                  <div className="col-span-2 flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground font-medium">Name:</span>
+                    <p className="font-medium">{selectedCustomer.name}</p>
                   </div>
-                )}
-                {selectedCustomer.address && (
-                  <div className="col-span-2">
-                    <p className="text-sm text-muted-foreground">Address</p>
-                    <p className="font-medium">{selectedCustomer.address}</p>
+                  <div className="flex items-center gap-2">
+                    <Phone className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground font-medium">Phone:</span>
+                    <p className="font-medium">{selectedCustomer.phone}</p>
                   </div>
-                )}
+                  {selectedCustomer.email && (
+                    <div className="flex items-center gap-2">
+                      <Mail className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground font-medium">Email:</span>
+                      <p className="font-medium truncate">{selectedCustomer.email}</p>
+                    </div>
+                  )}
+                  {selectedCustomer.address && (
+                    <div className="col-span-2 flex items-start gap-2">
+                      <MapPin className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <div>
+                        <span className="text-sm text-muted-foreground font-medium">Address:</span>
+                        <p className="font-medium text-sm">{selectedCustomer.address}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Service Information */}
+              <div>
+                <p className="text-sm font-semibold text-muted-foreground mb-3">Service Information</p>
+                <div className="grid grid-cols-2 gap-4 p-3 bg-accent/30 rounded-lg space-y-3">
+                  <div className="col-span-2 flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground font-medium">Status:</span>
+                    <Badge className={cn(``, PHASE_COLORS[selectedCustomer.status || 'Inquired'])}>
+                      {selectedCustomer.status || 'Inquired'}
+                    </Badge>
+                  </div>
+                  {selectedCustomer.service && (
+                    <div className="col-span-2 flex items-center gap-2">
+                      <Briefcase className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground font-medium">Service:</span>
+                      <p className="font-medium text-sm">{selectedCustomer.service}</p>
+                    </div>
+                  )}
+                  {selectedCustomer.serviceCost && (
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground font-medium">Service Cost:</span>
+                      <p className="font-medium">₹{selectedCustomer.serviceCost.toLocaleString('en-IN')}</p>
+                    </div>
+                  )}
+                  {selectedCustomer.createdAt && (
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground font-medium">Created:</span>
+                      <p className="font-medium text-sm">{new Date(selectedCustomer.createdAt).toLocaleDateString()}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Status and Vehicle Count */}
+              <div className="grid grid-cols-2 gap-4 p-3 bg-accent/30 rounded-lg">
                 <div>
-                  <p className="text-sm text-muted-foreground">Current Status</p>
-                  <Badge className={cn(`mt-1`, PHASE_COLORS[selectedCustomer.status || 'Inquired'])}>
-                    {selectedCustomer.status || 'Inquired'}
-                  </Badge>
+                  <p className="text-sm text-muted-foreground font-medium">Vehicles</p>
+                  <p className="font-semibold text-lg">{selectedCustomer.vehicles?.length || 0}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Vehicles</p>
-                  <p className="font-medium">{selectedCustomer.vehicles?.length || 0} vehicle(s)</p>
+                  <p className="text-sm text-muted-foreground font-medium">Services</p>
+                  <p className="font-semibold text-lg">{jobs.filter((j: any) => j.customerId === selectedCustomer._id).length}</p>
                 </div>
               </div>
 
