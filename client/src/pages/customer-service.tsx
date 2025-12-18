@@ -24,6 +24,7 @@ export default function CustomerService() {
   const [selectedTechnicianId, setSelectedTechnicianId] = useState<string>('');
   const [serviceNotes, setServiceNotes] = useState('');
   const [serviceCost, setServiceCost] = useState<string>('');
+  const [laborCost, setLaborCost] = useState<string>('');
   const [selectedItems, setSelectedItems] = useState<{ inventoryId: string; quantity: number; name: string; price: number }[]>([]);
   const [selectedItemId, setSelectedItemId] = useState<string>('');
   const [itemQuantity, setItemQuantity] = useState<string>('1');
@@ -86,6 +87,7 @@ export default function CustomerService() {
     setSelectedTechnicianId('');
     setServiceNotes('');
     setServiceCost('');
+    setLaborCost('');
     setSelectedItems([]);
     setSelectedItemId('');
     setItemQuantity('1');
@@ -163,8 +165,10 @@ export default function CustomerService() {
     }
 
     const parsedServiceCost = parseFloat(serviceCost) || 0;
-    if (parsedServiceCost <= 0) {
-      toast({ title: 'Please enter a valid service cost', variant: 'destructive' });
+    const parsedLaborCost = parseFloat(laborCost) || 0;
+    
+    if (parsedServiceCost <= 0 && parsedLaborCost <= 0) {
+      toast({ title: 'Please enter a valid service or labor cost', variant: 'destructive' });
       return;
     }
 
@@ -175,8 +179,7 @@ export default function CustomerService() {
     const vehicle = customer.vehicles[vehicleIdx];
     if (!vehicle) return;
 
-    const itemsCost = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const totalAmount = itemsCost + parsedServiceCost;
+    const totalAmount = parsedServiceCost + parsedLaborCost;
 
     const selectedTechnician = technicians.find((t: any) => t._id === selectedTechnicianId);
     
@@ -191,6 +194,7 @@ export default function CustomerService() {
       notes: serviceNotes,
       stage: 'New Lead',
       serviceCost: parsedServiceCost,
+      laborCost: parsedLaborCost,
       serviceItems: [],
       materials: [],
       totalAmount: totalAmount,
@@ -199,9 +203,9 @@ export default function CustomerService() {
     });
   };
 
-  const itemsCost = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const parsedServiceCost = parseFloat(serviceCost) || 0;
-  const totalCost = itemsCost + parsedServiceCost;
+  const parsedLaborCost = parseFloat(laborCost) || 0;
+  const totalCost = parsedServiceCost + parsedLaborCost;
 
   return (
     <div className="space-y-6">
@@ -300,7 +304,7 @@ export default function CustomerService() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Service/Labor Cost *</Label>
+                  <Label>Service Cost *</Label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
                     <Input
@@ -309,12 +313,28 @@ export default function CustomerService() {
                       step="0.01"
                       value={serviceCost}
                       onChange={(e) => setServiceCost(e.target.value)}
-                      placeholder="Enter service/labor charge"
+                      placeholder="Enter service charge"
                       className="pl-7"
                       data-testid="input-service-cost"
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground">This is the labor/service charge separate from item costs</p>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Labor Cost *</Label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
+                    <Input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={laborCost}
+                      onChange={(e) => setLaborCost(e.target.value)}
+                      placeholder="Enter labor charge"
+                      className="pl-7"
+                      data-testid="input-labor-cost"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -393,12 +413,12 @@ export default function CustomerService() {
                 <div className="border rounded-lg p-4 bg-accent/30 space-y-2">
                   <h4 className="font-semibold text-sm text-muted-foreground">Cost Summary</h4>
                   <div className="flex justify-between text-sm">
-                    <span>Items Cost:</span>
-                    <span>₹{itemsCost.toLocaleString('en-IN')}</span>
+                    <span>Service Cost:</span>
+                    <span>₹{parsedServiceCost.toLocaleString('en-IN')}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span>Service/Labor Cost:</span>
-                    <span>₹{parsedServiceCost.toLocaleString('en-IN')}</span>
+                    <span>Labor Cost:</span>
+                    <span>₹{parsedLaborCost.toLocaleString('en-IN')}</span>
                   </div>
                   <div className="border-t pt-2 mt-2">
                     <div className="flex justify-between font-bold text-lg">
@@ -406,6 +426,7 @@ export default function CustomerService() {
                       <span className="text-primary">₹{totalCost.toLocaleString('en-IN')}</span>
                     </div>
                   </div>
+                  <p className="text-xs text-muted-foreground mt-2">GST will be calculated and added to invoice</p>
                 </div>
               </div>
             </div>

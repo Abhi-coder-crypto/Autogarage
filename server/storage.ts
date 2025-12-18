@@ -472,9 +472,10 @@ export class MongoStorage implements IStorage {
 
     const items: { description: string; quantity: number; unitPrice: number; total: number; type: 'service' | 'material' }[] = [];
 
+    // Add service cost to invoice
     if (job.serviceCost && job.serviceCost > 0) {
       items.push({
-        description: 'Service/Labor Charge',
+        description: 'Service Charge',
         quantity: 1,
         unitPrice: job.serviceCost,
         total: job.serviceCost,
@@ -482,27 +483,19 @@ export class MongoStorage implements IStorage {
       });
     }
 
-    for (const service of job.serviceItems) {
+    // Add labor cost to invoice
+    if (job.laborCost && job.laborCost > 0) {
       items.push({
-        description: service.description,
+        description: 'Labor Charge',
         quantity: 1,
-        unitPrice: service.cost,
-        total: service.cost,
+        unitPrice: job.laborCost,
+        total: job.laborCost,
         type: 'service'
       });
     }
 
-    for (const material of job.materials) {
-      const inventoryItem = await this.getInventoryItem(material.inventoryId.toString());
-      const unitPrice = inventoryItem?.price || material.cost / material.quantity;
-      items.push({
-        description: material.name,
-        quantity: material.quantity,
-        unitPrice: unitPrice,
-        total: unitPrice * material.quantity,
-        type: 'material'
-      });
-    }
+    // Materials are tracked for inventory purposes only, not included in invoice pricing
+    // Invoice uses only: Service Cost + Labor Cost + GST
 
     const subtotal = items.reduce((sum, item) => sum + item.total, 0);
     const tax = (subtotal * taxRate) / 100;
