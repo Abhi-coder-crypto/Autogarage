@@ -275,10 +275,13 @@ export default function CustomerService() {
                     <Label>Select Vehicle *</Label>
                     <Select value={selectedVehicleIndex} onValueChange={setSelectedVehicleIndex}>
                       <SelectTrigger data-testid="select-vehicle">
-                        {selectedVehicleIndex ? (
-                          <SelectValue />
+                        {selectedVehicleIndex !== '' ? (
+                          <div className="flex items-center gap-2">
+                            <Car className="w-4 h-4" />
+                            {selectedCustomer.vehicles[parseInt(selectedVehicleIndex)]?.make} {selectedCustomer.vehicles[parseInt(selectedVehicleIndex)]?.model} - {selectedCustomer.vehicles[parseInt(selectedVehicleIndex)]?.plateNumber}
+                          </div>
                         ) : (
-                          <span className="text-muted-foreground">Choose a vehicle</span>
+                          <span>Choose a vehicle</span>
                         )}
                       </SelectTrigger>
                       <SelectContent>
