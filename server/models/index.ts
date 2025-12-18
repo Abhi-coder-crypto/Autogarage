@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 export type JobStage = 'New Lead' | 'Inspection Done' | 'Work In Progress' | 'Ready for Delivery' | 'Completed' | 'Cancelled';
 export type PaymentStatus = 'Pending' | 'Partially Paid' | 'Paid';
 export type TechnicianStatus = 'Available' | 'Busy' | 'Off';
-export type InventoryCategory = 'PPF' | 'Ceramic' | 'Tools' | 'Parts' | 'Chemicals';
+export type InventoryCategory = 'Elite' | 'Garware Plus' | 'Garware Premium' | 'Garware Matt';
 export type PaymentMode = 'Cash' | 'UPI' | 'Card' | 'Bank Transfer';
 
 export interface IVehicle {
@@ -211,7 +211,7 @@ const TechnicianSchema = new Schema<ITechnician>({
 
 const InventorySchema = new Schema<IInventoryItem>({
   name: { type: String, required: true },
-  category: { type: String, enum: ['PPF', 'Ceramic', 'Tools', 'Parts', 'Chemicals'], required: true },
+  category: { type: String, enum: ['Elite', 'Garware Plus', 'Garware Premium', 'Garware Matt'], required: true },
   quantity: { type: Number, required: true, default: 0 },
   unit: { type: String, required: true },
   minStock: { type: Number, required: true, default: 0 },

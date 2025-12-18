@@ -3,7 +3,7 @@ import { z } from "zod";
 export type JobStage = 'New Lead' | 'Inspection Done' | 'Work In Progress' | 'Ready for Delivery' | 'Completed' | 'Cancelled';
 export type PaymentStatus = 'Pending' | 'Partially Paid' | 'Paid';
 export type TechnicianStatus = 'Available' | 'Busy' | 'Off';
-export type InventoryCategory = 'PPF' | 'Ceramic' | 'Tools' | 'Parts' | 'Chemicals';
+export type InventoryCategory = 'Elite' | 'Garware Plus' | 'Garware Premium' | 'Garware Matt';
 export type PaymentMode = 'Cash' | 'UPI' | 'Card' | 'Bank Transfer';
 export type CustomerStatus = 'Inquired' | 'Working' | 'Waiting' | 'Completed';
 
@@ -73,7 +73,7 @@ export const technicianSchema = z.object({
 
 export const inventorySchema = z.object({
   name: z.string().min(1),
-  category: z.enum(['PPF', 'Ceramic', 'Tools', 'Parts', 'Chemicals']),
+  category: z.enum(['Elite', 'Garware Plus', 'Garware Premium', 'Garware Matt']),
   quantity: z.number().min(0).default(0),
   unit: z.string().min(1),
   minStock: z.number().min(0).default(0)

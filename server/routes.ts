@@ -279,6 +279,7 @@ export async function registerRoutes(
       const item = await storage.createInventoryItem(req.body);
       res.status(201).json(item);
     } catch (error) {
+      console.error("Inventory creation error:", error);
       res.status(500).json({ message: "Failed to create inventory item" });
     }
   });
