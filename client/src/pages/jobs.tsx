@@ -10,8 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Search, Car, User, Phone, ChevronRight, FileText } from 'lucide-react';
-import { Link, useLocation } from 'wouter';
+import { Plus, Search, Car, User, Phone, MessageCircle, FileText, IndianRupee } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const JOB_STAGES = [
@@ -32,11 +31,27 @@ const STAGE_COLORS: Record<string, string> = {
   'Cancelled': 'bg-red-500/20 text-red-400 border-red-500/30'
 };
 
-export default function Jobs() {
-  const [, navigate] = useLocation();
+const STAGE_BG_COLORS: Record<string, string> = {
+  'New Lead': 'bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800',
+  'Inspection Done': 'bg-yellow-50 dark:bg-yellow-950/30 border-yellow-200 dark:border-yellow-800',
+  'Work In Progress': 'bg-orange-50 dark:bg-orange-950/30 border-orange-200 dark:border-orange-800',
+  'Ready for Delivery': 'bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800',
+  'Completed': 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800',
+  'Cancelled': 'bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800'
+};
+
+const STAGE_BADGE_COLORS: Record<string, string> = {
+  'New Lead': 'bg-blue-100 dark:bg-blue-950/50 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800',
+  'Inspection Done': 'bg-yellow-100 dark:bg-yellow-950/50 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800',
+  'Work In Progress': 'bg-orange-100 dark:bg-orange-950/50 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800',
+  'Ready for Delivery': 'bg-green-100 dark:bg-green-950/50 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800',
+  'Completed': 'bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800',
+  'Cancelled': 'bg-red-100 dark:bg-red-950/50 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800'
+};
+
+export default function ServiceFunnel() {
   const [search, setSearch] = useState('');
   const [stageFilter, setStageFilter] = useState<string>('all');
-  const [dialogOpen, setDialogOpen] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -74,19 +89,6 @@ export default function Jobs() {
 
   const hasInvoice = (jobId: string) => invoices.some((inv: any) => inv.jobId === jobId);
 
-  const createJobMutation = useMutation({
-    mutationFn: api.jobs.create,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['jobs'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
-      setDialogOpen(false);
-      toast({ title: 'Job created successfully' });
-    },
-    onError: () => {
-      toast({ title: 'Failed to create job', variant: 'destructive' });
-    }
-  });
-
   const updateStageMutation = useMutation({
     mutationFn: ({ id, stage }: { id: string; stage: string }) => api.jobs.updateStage(id, stage),
     onSuccess: (_, variables) => {
@@ -95,12 +97,20 @@ export default function Jobs() {
       if (variables.stage === 'Completed') {
         queryClient.invalidateQueries({ queryKey: ['invoices'] });
       }
-      toast({ title: 'Stage updated' });
+      toast({ 
+        title: 'Status updated',
+        description: 'WhatsApp notification sent & invoice created if needed'
+      });
     },
     onError: () => {
       toast({ title: 'Cannot change stage after invoice is created', variant: 'destructive' });
     }
   });
+
+  const groupedJobs = JOB_STAGES.reduce((acc, stage) => {
+    acc[stage] = jobs.filter((job: any) => job.stage === stage);
+    return acc;
+  }, {} as Record<string, any[]>);
 
   const filteredJobs = jobs.filter((job: any) => {
     const matchesSearch = search === '' || 
@@ -111,134 +121,34 @@ export default function Jobs() {
     return matchesSearch && matchesStage;
   });
 
-  const handleCreateJob = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    
-    const customerId = formData.get('customerId') as string;
-    const vehicleIndex = parseInt(formData.get('vehicleIndex') as string);
-    const customer = customers.find((c: any) => c._id === customerId);
-    
-    if (!customer) return;
-    
-    const vehicle = customer.vehicles[vehicleIndex];
-    
-    createJobMutation.mutate({
-      customerId,
-      vehicleIndex,
-      customerName: customer.name,
-      vehicleName: `${vehicle.make} ${vehicle.model}`,
-      plateNumber: vehicle.plateNumber,
-      technicianId: formData.get('technicianId') as string || undefined,
-      technicianName: technicians.find((t: any) => t._id === formData.get('technicianId'))?.name,
-      notes: formData.get('notes') as string,
-      stage: 'New Lead',
-      serviceItems: [],
-      totalAmount: 0,
-      paidAmount: 0,
-      paymentStatus: 'Pending'
-    });
-  };
-
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="font-display text-3xl font-bold tracking-tight">Jobs</h1>
-          <p className="text-muted-foreground mt-1">Manage all service jobs</p>
-        </div>
-        
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-primary hover:bg-primary/90" data-testid="button-new-job">
-              <Plus className="w-4 h-4 mr-2" />
-              New Job
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle>Create New Job</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleCreateJob} className="space-y-4">
-              <div className="space-y-2">
-                <Label>Customer</Label>
-                <Select 
-                  name="customerId" 
-                  required
-                  onValueChange={(val) => setSelectedCustomer(customers.find((c: any) => c._id === val))}
-                >
-                  <SelectTrigger data-testid="select-customer">
-                    <SelectValue placeholder="Select customer" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {customers.map((customer: any) => (
-                      <SelectItem key={customer._id} value={customer._id}>
-                        {customer.name} - {customer.phone}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {selectedCustomer && (
-                <div className="space-y-2">
-                  <Label>Vehicle</Label>
-                  <Select name="vehicleIndex" required>
-                    <SelectTrigger data-testid="select-vehicle">
-                      <SelectValue placeholder="Select vehicle" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {selectedCustomer.vehicles.map((v: any, i: number) => (
-                        <SelectItem key={i} value={i.toString()}>
-                          {v.make} {v.model} - {v.plateNumber}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-
-              <div className="space-y-2">
-                <Label>Assign Technician (Optional)</Label>
-                <Select name="technicianId">
-                  <SelectTrigger data-testid="select-technician">
-                    <SelectValue placeholder="Select technician" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {technicians.map((tech: any) => (
-                      <SelectItem key={tech._id} value={tech._id}>
-                        {tech.name} - {tech.specialty}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Notes</Label>
-                <Textarea 
-                  name="notes" 
-                  placeholder="Service notes..." 
-                  data-testid="input-notes"
-                />
-              </div>
-
-              <Button 
-                type="submit" 
-                className="w-full bg-primary"
-                disabled={createJobMutation.isPending}
-                data-testid="button-submit-job"
-              >
-                {createJobMutation.isPending ? 'Creating...' : 'Create Job'}
-              </Button>
-            </form>
-          </DialogContent>
-        </Dialog>
+      <div>
+        <h1 className="font-display text-3xl font-bold tracking-tight" data-testid="text-service-funnel-title">
+          Service Funnel
+        </h1>
+        <p className="text-muted-foreground mt-1">
+          Track service status, send WhatsApp updates automatically, and manage invoices
+        </p>
       </div>
 
+      {/* Funnel Overview */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        {JOB_STAGES.map(stage => (
+          <Card key={stage} className={cn("border", STAGE_BG_COLORS[stage])}>
+            <CardContent className="p-3">
+              <div className="flex flex-col items-center gap-2 text-center">
+                <Badge className={cn(STAGE_BADGE_COLORS[stage], "text-xs")}>{stage}</Badge>
+                <span className="text-3xl font-bold">{groupedJobs[stage]?.length || 0}</span>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Search and Filter */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -263,19 +173,20 @@ export default function Jobs() {
         </Select>
       </div>
 
+      {/* Service List */}
       <div className="space-y-3">
         {isLoading ? (
-          <div className="text-center py-8 text-muted-foreground">Loading jobs...</div>
+          <div className="text-center py-8 text-muted-foreground">Loading services...</div>
         ) : filteredJobs.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
-            {search || stageFilter !== 'all' ? 'No jobs match your filters' : 'No jobs yet. Create your first job!'}
+            {search || stageFilter !== 'all' ? 'No services match your filters' : 'No services yet. Create a new service from Customers Service page.'}
           </div>
         ) : (
           filteredJobs.map((job: any) => (
             <Card 
               key={job._id} 
-              className="bg-card border-border hover:border-primary/30 transition-colors cursor-pointer"
-              data-testid={`job-row-${job._id}`}
+              className="bg-card border-border hover:border-primary/30 transition-colors"
+              data-testid={`service-item-${job._id}`}
             >
               <CardContent className="p-4">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -323,18 +234,22 @@ export default function Jobs() {
                         </SelectContent>
                       </Select>
                     )}
+                    
+                    <div title="WhatsApp message sent automatically">
+                      <MessageCircle className="w-5 h-5 text-green-500" />
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between gap-4 mt-4 pt-4 border-t border-border text-sm">
+                <div className="flex items-center justify-between gap-4 mt-4 pt-4 border-t border-border text-sm flex-wrap">
                   <div className="flex items-center gap-4">
                     <div>
                       <span className="text-muted-foreground">Total: </span>
-                      <span className="font-semibold">₹{job.totalAmount.toLocaleString('en-IN')}</span>
+                      <span className="font-semibold flex items-center"><IndianRupee className="w-3 h-3" />{job.totalAmount.toLocaleString('en-IN')}</span>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Paid: </span>
-                      <span className="font-semibold text-green-500">₹{job.paidAmount.toLocaleString('en-IN')}</span>
+                      <span className="font-semibold text-green-500 flex items-center"><IndianRupee className="w-3 h-3" />{job.paidAmount.toLocaleString('en-IN')}</span>
                     </div>
                     <Badge 
                       variant="outline" 
@@ -349,7 +264,7 @@ export default function Jobs() {
                   </div>
                   <div>
                     {hasInvoice(job._id) ? (
-                      <Badge className="bg-green-100 text-green-700 border-green-200">
+                      <Badge className="bg-green-100 dark:bg-green-950/50 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800">
                         <FileText className="w-3 h-3 mr-1" />
                         Invoice Created
                       </Badge>
