@@ -713,23 +713,9 @@ export default function CustomerRegistration() {
 
                 <div className="space-y-2">
                   <Label>Vehicle Type</Label>
-                  <Select
-                    value={vehicleData.vehicleType}
-                    onValueChange={(value) =>
-                      setVehicleData({ ...vehicleData, vehicleType: value })
-                    }
-                  >
-                    <SelectTrigger data-testid="select-vehicle-type">
-                      <SelectValue placeholder="Select vehicle type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {VEHICLE_TYPES.map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <div className="px-3 py-2 bg-muted rounded-md text-sm" data-testid="display-vehicle-type">
+                    {vehicleData.vehicleType || 'Not selected'}
+                  </div>
                 </div>
 
                 <div className="space-y-2">
