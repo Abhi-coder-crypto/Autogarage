@@ -93,6 +93,13 @@ export default function CustomerService() {
 
   const selectedCustomer = customers.find((c: any) => c._id === selectedCustomerId);
 
+  // Auto-fill service cost when customer is selected
+  useEffect(() => {
+    if (selectedCustomer && selectedCustomer.serviceCost) {
+      setServiceCost(selectedCustomer.serviceCost.toString());
+    }
+  }, [selectedCustomerId]);
+
   const handleAddItem = () => {
     if (!selectedItemId) {
       toast({ title: 'Please select an item', variant: 'destructive' });

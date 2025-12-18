@@ -272,6 +272,7 @@ export default function CustomerRegistration() {
       address: `${customerData.address}, ${customerData.city}, ${customerData.district}, ${customerData.state}`,
       status: customerData.status,
       service: selectedService || undefined,
+      serviceCost: customerData.ppfPrice || customerData.servicePrice || 0,
       vehicles: [
         {
           make: vehicleData.make,

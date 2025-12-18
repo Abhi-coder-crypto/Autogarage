@@ -24,6 +24,7 @@ export interface ICustomer extends Document {
   address?: string;
   status: CustomerStatus;
   service?: string;
+  serviceCost?: number;
   vehicles: IVehicle[];
   createdAt: Date;
 }
@@ -150,6 +151,7 @@ const CustomerSchema = new Schema<ICustomer>({
   address: { type: String },
   status: { type: String, enum: ['Inquired', 'Working', 'Waiting', 'Completed'], default: 'Inquired' },
   service: { type: String },
+  serviceCost: { type: Number, default: 0 },
   vehicles: [VehicleSchema],
   createdAt: { type: Date, default: Date.now }
 });
