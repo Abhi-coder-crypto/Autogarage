@@ -127,15 +127,6 @@ export default function CustomerFunnel() {
         </div>
       </div>
 
-      {/* Stage Summary */}
-      <div className="flex flex-wrap gap-4 text-sm">
-        {FUNNEL_STAGES.map((stage) => (
-          <div key={stage.key} className="text-muted-foreground">
-            <span className="font-semibold">{stage.label}</span> <span className="font-bold text-foreground">({stageCounts[stage.key]})</span>
-          </div>
-        ))}
-      </div>
-
       {/* Rows for each stage */}
       {isLoading ? (
         <div className="text-center py-8 text-muted-foreground">Loading...</div>
