@@ -12,15 +12,14 @@ import { useToast } from '@/hooks/use-toast';
 import { Plus, Package, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const CATEGORIES = ['PPF', 'Ceramic', 'Tools', 'Parts', 'Chemicals'];
+const CATEGORIES = ['Elite', 'Garware Plus', 'Garware Premium', 'Garware Matt'];
 const UNITS = ['meter', 'feet', 'piece', 'kg', 'gram', 'liter', 'ml', 'roll', 'box', 'set'];
 
 const CATEGORY_COLORS: Record<string, string> = {
-  'PPF': 'bg-blue-500/20 text-blue-400',
-  'Ceramic': 'bg-purple-500/20 text-purple-400',
-  'Tools': 'bg-gray-500/20 text-gray-400',
-  'Parts': 'bg-orange-500/20 text-orange-400',
-  'Chemicals': 'bg-green-500/20 text-green-400'
+  'Elite': 'bg-blue-500/20 text-blue-400',
+  'Garware Plus': 'bg-purple-500/20 text-purple-400',
+  'Garware Premium': 'bg-orange-500/20 text-orange-400',
+  'Garware Matt': 'bg-green-500/20 text-green-400'
 };
 
 export default function Inventory() {
