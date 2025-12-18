@@ -306,6 +306,10 @@ export default function CustomerRegistration() {
 
   const handleNextStep = () => {
     if (validateStep1()) {
+      // Pre-fill vehicle type from PPF selection in step 2
+      if (customerData.ppfVehicleType) {
+        setVehicleData({ ...vehicleData, vehicleType: customerData.ppfVehicleType });
+      }
       setStep(2);
     }
   };
