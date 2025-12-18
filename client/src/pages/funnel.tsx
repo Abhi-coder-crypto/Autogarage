@@ -254,87 +254,89 @@ export default function CustomerFunnel() {
 
       {/* Details Dialog */}
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Customer Details</DialogTitle>
           </DialogHeader>
           {selectedCustomer && (
-            <div className="space-y-4">
-              {/* Personal Information */}
-              <div>
-                <p className="text-sm font-semibold text-muted-foreground mb-3">Personal Information</p>
-                <div className="grid grid-cols-2 gap-4 p-3 bg-accent/30 rounded-lg space-y-3">
-                  <div className="col-span-2 flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground font-medium">Name:</span>
-                    <p className="font-medium">{selectedCustomer.name}</p>
+            <div className="space-y-3">
+              {/* Personal Information - Compact */}
+              <div className="p-3 bg-accent/30 rounded-lg">
+                <p className="text-xs font-semibold text-muted-foreground mb-2">PERSONAL INFORMATION</p>
+                <div className="space-y-1.5 text-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium min-w-fit">Name:</span>
+                    <p className="truncate">{selectedCustomer.name}</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground font-medium">Phone:</span>
-                    <p className="font-medium">{selectedCustomer.phone}</p>
+                    <Phone className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+                    <span className="font-medium min-w-fit">Phone:</span>
+                    <p className="truncate">{selectedCustomer.phone}</p>
                   </div>
                   {selectedCustomer.email && (
                     <div className="flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground font-medium">Email:</span>
-                      <p className="font-medium truncate">{selectedCustomer.email}</p>
+                      <Mail className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+                      <span className="font-medium min-w-fit">Email:</span>
+                      <p className="truncate">{selectedCustomer.email}</p>
                     </div>
                   )}
                   {selectedCustomer.address && (
-                    <div className="col-span-2 flex items-start gap-2">
-                      <MapPin className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                      <div>
-                        <span className="text-sm text-muted-foreground font-medium">Address:</span>
-                        <p className="font-medium text-sm">{selectedCustomer.address}</p>
+                    <div className="flex items-start gap-2">
+                      <MapPin className="w-3 h-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <div className="min-w-0 flex-1">
+                        <span className="font-medium">Address:</span>
+                        <p className="text-xs text-muted-foreground truncate">{selectedCustomer.address}</p>
                       </div>
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Service Information */}
-              <div>
-                <p className="text-sm font-semibold text-muted-foreground mb-3">Service Information</p>
-                <div className="grid grid-cols-2 gap-4 p-3 bg-accent/30 rounded-lg space-y-3">
-                  <div className="col-span-2 flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground font-medium">Status:</span>
-                    <Badge className={cn(``, PHASE_COLORS[selectedCustomer.status || 'Inquired'])}>
+              {/* Service Information - Compact */}
+              <div className="p-3 bg-accent/30 rounded-lg">
+                <p className="text-xs font-semibold text-muted-foreground mb-2">SERVICE INFORMATION</p>
+                <div className="space-y-1.5 text-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium min-w-fit">Status:</span>
+                    <Badge variant="outline" className={cn(`text-xs`, PHASE_COLORS[selectedCustomer.status || 'Inquired'])}>
                       {selectedCustomer.status || 'Inquired'}
                     </Badge>
                   </div>
                   {selectedCustomer.service && (
-                    <div className="col-span-2 flex items-center gap-2">
-                      <Briefcase className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground font-medium">Service:</span>
-                      <p className="font-medium text-sm">{selectedCustomer.service}</p>
+                    <div className="flex items-start gap-2">
+                      <Briefcase className="w-3 h-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <div className="min-w-0 flex-1">
+                        <span className="font-medium">Service:</span>
+                        <p className="text-xs text-muted-foreground truncate">{selectedCustomer.service}</p>
+                      </div>
                     </div>
                   )}
                   {selectedCustomer.serviceCost && (
                     <div className="flex items-center gap-2">
-                      <DollarSign className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground font-medium">Service Cost:</span>
-                      <p className="font-medium">₹{selectedCustomer.serviceCost.toLocaleString('en-IN')}</p>
+                      <DollarSign className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+                      <span className="font-medium min-w-fit">Cost:</span>
+                      <p>₹{selectedCustomer.serviceCost.toLocaleString('en-IN')}</p>
                     </div>
                   )}
                   {selectedCustomer.createdAt && (
                     <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground font-medium">Created:</span>
-                      <p className="font-medium text-sm">{new Date(selectedCustomer.createdAt).toLocaleDateString()}</p>
+                      <Calendar className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+                      <span className="font-medium min-w-fit">Created:</span>
+                      <p className="text-xs">{new Date(selectedCustomer.createdAt).toLocaleDateString()}</p>
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Status and Vehicle Count */}
-              <div className="grid grid-cols-2 gap-4 p-3 bg-accent/30 rounded-lg">
-                <div>
-                  <p className="text-sm text-muted-foreground font-medium">Vehicles</p>
-                  <p className="font-semibold text-lg">{selectedCustomer.vehicles?.length || 0}</p>
+              {/* Summary Stats - Compact */}
+              <div className="grid grid-cols-2 gap-2 p-2">
+                <div className="p-2 bg-accent/30 rounded text-center">
+                  <p className="text-xs text-muted-foreground font-medium">Vehicles</p>
+                  <p className="font-semibold text-base">{selectedCustomer.vehicles?.length || 0}</p>
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground font-medium">Services</p>
-                  <p className="font-semibold text-lg">{jobs.filter((j: any) => j.customerId === selectedCustomer._id).length}</p>
+                <div className="p-2 bg-accent/30 rounded text-center">
+                  <p className="text-xs text-muted-foreground font-medium">Services</p>
+                  <p className="font-semibold text-base">{jobs.filter((j: any) => j.customerId === selectedCustomer._id).length}</p>
                 </div>
               </div>
 
