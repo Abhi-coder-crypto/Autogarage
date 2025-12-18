@@ -41,49 +41,54 @@ const VEHICLE_TYPES = [
   "Other",
 ];
 
-const PPF_PACKAGES = [
-  // Elite
-  "Elite - Small Cars - TPU 5Y (Gloss) - ₹55,000",
-  "Elite - Small Cars - TPU 5Y (Matt) - ₹60,000",
-  "Elite - Small Cars - TPU 7Y (Gloss) - ₹70,000",
-  "Elite - Small Cars - TPU 8Y (Gloss) - ₹80,000",
-  "Elite - Small Cars - TPU 10Y (Gloss) - ₹95,000",
-  "Elite - Hatchback/Small Sedan - TPU 5Y (Gloss) - ₹60,000",
-  "Elite - Hatchback/Small Sedan - TPU 5Y (Matt) - ₹65,000",
-  "Elite - Hatchback/Small Sedan - TPU 7Y (Gloss) - ₹75,000",
-  "Elite - Hatchback/Small Sedan - TPU 8Y (Gloss) - ₹85,000",
-  "Elite - Hatchback/Small Sedan - TPU 10Y (Gloss) - ₹1,05,000",
-  "Elite - Mid-size Sedan/Compact SUV/MUV - TPU 5Y (Gloss) - ₹70,000",
-  "Elite - Mid-size Sedan/Compact SUV/MUV - TPU 5Y (Matt) - ₹75,000",
-  "Elite - Mid-size Sedan/Compact SUV/MUV - TPU 7Y (Gloss) - ₹90,000",
-  "Elite - Mid-size Sedan/Compact SUV/MUV - TPU 8Y (Gloss) - ₹95,000",
-  "Elite - Mid-size Sedan/Compact SUV/MUV - TPU 10Y (Gloss) - ₹1,12,500",
-  "Elite - SUV/MPV - TPU 5Y (Gloss) - ₹80,000",
-  "Elite - SUV/MPV - TPU 5Y (Matt) - ₹85,000",
-  "Elite - SUV/MPV - TPU 7Y (Gloss) - ₹95,000",
-  "Elite - SUV/MPV - TPU 8Y (Gloss) - ₹1,05,000",
-  "Elite - SUV/MPV - TPU 10Y (Gloss) - ₹1,20,000",
-  // Garware P
-  "Garware P - Small Cars - ₹62,000",
-  "Garware P - Hatchback/Small Sedan - ₹65,000",
-  "Garware P - Mid-size Sedan/Compact SUV/MUV - ₹70,000",
-  "Garware P - SUV/MPV - ₹85,000",
-  "Garware P - Small Cars - 10Y - ₹80,000",
-  "Garware P - Hatchback/Small Sedan - 10Y - ₹85,000",
-  "Garware P - Mid-size Sedan/Compact SUV/MUV - 10Y - ₹90,000",
-  "Garware P - SUV/MPV - 10Y - ₹95,000",
-  // Garware N
-  "Garware N - Small Cars - 7Y - ₹1,05,000",
-  "Garware N - Hatchback/Small Sedan - 7Y - ₹1,10,000",
-  "Garware N - Mid-size Sedan/Compact SUV/MUV - 7Y - ₹1,15,000",
-  "Garware N - SUV/MPV - 7Y - ₹1,20,000",
-];
+const PPF_CATEGORIES = {
+  Elite: {
+    "Small Cars": {
+      "TPU 5 Years Gloss": 55000,
+      "TPU 5 Years Matt": 60000,
+      "TPU 7 Years Gloss": 80000,
+      "TPU 10 Years Gloss": 95000,
+    },
+    "Hatchback / Small Sedan": {
+      "TPU 5 Years Gloss": 60000,
+      "TPU 5 Years Matt": 70000,
+      "TPU 7 Years Gloss": 85000,
+      "TPU 10 Years Gloss": 105000,
+    },
+    "Mid-size Sedan / Compact SUV / MUV": {
+      "TPU 5 Years Gloss": 70000,
+      "TPU 5 Years Matt": 75000,
+      "TPU 7 Years Gloss": 90000,
+      "TPU 10 Years Gloss": 112000,
+    },
+    "SUV / MPV": {
+      "TPU 5 Years Gloss": 80000,
+      "TPU 5 Years Matt": 85000,
+      "TPU 7 Years Gloss": 95000,
+      "TPU 10 Years Gloss": 120000,
+    },
+  },
+  "Garware Plus": {
+    "Small Cars": { "TPU 5 Years Gloss": 62000 },
+    "Hatchback / Small Sedan": { "TPU 5 Years Gloss": 65000 },
+    "Mid-size Sedan / Compact SUV / MUV": { "TPU 5 Years Gloss": 70000 },
+    "SUV / MPV": { "TPU 5 Years Gloss": 85000 },
+  },
+  "Garware Premium": {
+    "Small Cars": { "TPU 8 Years Gloss": 80000 },
+    "Hatchback / Small Sedan": { "TPU 8 Years Gloss": 85000 },
+    "Mid-size Sedan / Compact SUV / MUV": { "TPU 8 Years Gloss": 90000 },
+    "SUV / MPV": { "TPU 8 Years Gloss": 95000 },
+  },
+  "Garware Matt": {
+    "Small Cars": { "TPU 5 Years Matt": 105000 },
+    "Hatchback / Small Sedan": { "TPU 5 Years Matt": 110000 },
+    "Mid-size Sedan / Compact SUV / MUV": { "TPU 5 Years Matt": 115000 },
+    "SUV / MPV": { "TPU 5 Years Matt": 120000 },
+  },
+};
 
 const SERVICE_OPTIONS = {
-  ppf: {
-    label: "PPF Services",
-    options: PPF_PACKAGES,
-  },
   services: {
     label: "Other Services",
     options: [
@@ -131,6 +136,10 @@ export default function CustomerRegistration() {
     referralSource: "",
     status: "Inquired",
     service: "",
+    ppfCategory: "",
+    ppfVehicleType: "",
+    ppfWarranty: "",
+    ppfPrice: 0,
   });
 
   // Vehicle info
@@ -341,8 +350,95 @@ export default function CustomerRegistration() {
                   </Select>
                 </div>
 
+                {/* PPF Selection */}
+                <div className="md:col-span-2 space-y-3">
+                  <div>
+                    <Label>PPF Category</Label>
+                    <Select
+                      value={customerData.ppfCategory}
+                      onValueChange={(value) =>
+                        setCustomerData({
+                          ...customerData,
+                          ppfCategory: value,
+                          ppfVehicleType: "",
+                          ppfWarranty: "",
+                          ppfPrice: 0,
+                        })
+                      }
+                    >
+                      <SelectTrigger data-testid="select-ppf-category">
+                        <SelectValue placeholder="Select PPF category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.keys(PPF_CATEGORIES).map((category) => (
+                          <SelectItem key={category} value={category}>
+                            {category}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {customerData.ppfCategory && (
+                    <div>
+                      <Label>Vehicle Type</Label>
+                      <Select
+                        value={customerData.ppfVehicleType}
+                        onValueChange={(value) =>
+                          setCustomerData({
+                            ...customerData,
+                            ppfVehicleType: value,
+                            ppfWarranty: "",
+                            ppfPrice: 0,
+                          })
+                        }
+                      >
+                        <SelectTrigger data-testid="select-ppf-vehicle">
+                          <SelectValue placeholder="Select vehicle type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.keys(PPF_CATEGORIES[customerData.ppfCategory as keyof typeof PPF_CATEGORIES]).map((type) => (
+                            <SelectItem key={type} value={type}>
+                              {type}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+
+                  {customerData.ppfVehicleType && (
+                    <div>
+                      <Label>Warranty & Price</Label>
+                      <Select
+                        value={customerData.ppfWarranty}
+                        onValueChange={(value) => {
+                          const price = PPF_CATEGORIES[customerData.ppfCategory as keyof typeof PPF_CATEGORIES][customerData.ppfVehicleType as string][value as string] as number;
+                          setCustomerData({
+                            ...customerData,
+                            ppfWarranty: value,
+                            ppfPrice: price,
+                          });
+                        }}
+                      >
+                        <SelectTrigger data-testid="select-ppf-warranty">
+                          <SelectValue placeholder="Select warranty" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.entries(PPF_CATEGORIES[customerData.ppfCategory as keyof typeof PPF_CATEGORIES][customerData.ppfVehicleType as string]).map(([warranty, price]) => (
+                            <SelectItem key={warranty} value={warranty}>
+                              {warranty} - ₹{(price as number).toLocaleString('en-IN')}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+                </div>
+
+                {/* Other Services */}
                 <div className="md:col-span-2 space-y-2">
-                  <Label>Service Required *</Label>
+                  <Label>Other Services</Label>
                   <Select
                     value={customerData.service}
                     onValueChange={(value) =>
@@ -353,16 +449,9 @@ export default function CustomerRegistration() {
                     }
                   >
                     <SelectTrigger data-testid="select-service">
-                      <SelectValue placeholder="Select a service" />
+                      <SelectValue placeholder="Select a service (optional)" />
                     </SelectTrigger>
                     <SelectContent>
-                      <div className="px-2 py-1.5 text-sm font-semibold text-blue-600">— {SERVICE_OPTIONS.ppf.label} —</div>
-                      {SERVICE_OPTIONS.ppf.options.map((service) => (
-                        <SelectItem key={service} value={service}>
-                          {service}
-                        </SelectItem>
-                      ))}
-                      <div className="px-2 py-1.5 text-sm font-semibold text-green-600 mt-2">— {SERVICE_OPTIONS.services.label} —</div>
                       {SERVICE_OPTIONS.services.options.map((service) => (
                         <SelectItem key={service} value={service}>
                           {service}
