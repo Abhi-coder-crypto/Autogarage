@@ -558,7 +558,7 @@ export default function CustomerRegistration() {
                         <SelectTrigger data-testid="select-service-name">
                           <SelectValue placeholder="Select service" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="max-h-80 overflow-y-auto">
                           {Object.keys(OTHER_SERVICES).map((service) => (
                             <SelectItem key={service} value={service}>
                               {service}
