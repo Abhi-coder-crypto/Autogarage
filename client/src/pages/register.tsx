@@ -232,9 +232,9 @@ export default function CustomerRegistration() {
     ppfVehicleType: "",
     ppfWarranty: "",
     ppfPrice: 0,
-    serviceName: "",
-    serviceVehicleType: "",
-    servicePrice: 0,
+    selectedOtherServices: [] as Array<{ name: string; vehicleType: string; price: number }>,
+    tempServiceName: "",
+    tempServiceVehicleType: "",
   });
 
   // Vehicle info
@@ -263,16 +263,24 @@ export default function CustomerRegistration() {
   const handleSubmit = () => {
     const selectedService = customerData.ppfCategory 
       ? `${customerData.ppfCategory} - ${customerData.ppfWarranty}`
-      : customerData.serviceName;
+      : '';
     
-    // Calculate total service cost (PPF + Other Services if both selected)
+    // Calculate total service cost (PPF + All selected Other Services)
     let totalServiceCost = 0;
     if (customerData.ppfPrice > 0) {
       totalServiceCost += customerData.ppfPrice;
     }
-    if (customerData.serviceName && customerData.servicePrice > 0) {
-      totalServiceCost += customerData.servicePrice;
-    }
+    customerData.selectedOtherServices.forEach(service => {
+      if (service.price > 0) {
+        totalServiceCost += service.price;
+      }
+    });
+    
+    const otherServicesStr = customerData.selectedOtherServices.length > 0
+      ? customerData.selectedOtherServices.map(s => s.name).join(', ')
+      : '';
+    
+    const servicesList = [selectedService, otherServicesStr].filter(Boolean).join(' + ') || undefined;
     
     createCustomerMutation.mutate({
       name: customerData.name,
@@ -280,7 +288,7 @@ export default function CustomerRegistration() {
       email: customerData.email || undefined,
       address: `${customerData.address}, ${customerData.city}, ${customerData.district}, ${customerData.state}`,
       status: customerData.status,
-      service: selectedService || undefined,
+      service: servicesList,
       serviceCost: totalServiceCost,
       vehicles: [
         {
@@ -325,16 +333,17 @@ export default function CustomerRegistration() {
     vehicleData.make && vehicleData.model && vehicleData.plateNumber;
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 p-4">
-      <div className="max-w-3xl mx-auto">
+    <div className="p-4">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="mb-3">
+        <div className="mb-6">
           <h1
-            className="font-display text-xl font-bold tracking-tight"
+            className="font-display text-3xl font-bold tracking-tight"
             data-testid="text-registration-title"
           >
             Customer Registration
           </h1>
+          <p className="text-muted-foreground mt-1">Fill in customer details and select services</p>
         </div>
 
         {/* Step 1: Customer Information */}
@@ -539,20 +548,10 @@ export default function CustomerRegistration() {
 
                   {/* Other Services Selection - Right Column */}
                   <div className="space-y-3">
-                    <h3 className="font-medium text-sm">Other Services</h3>
+                    <h3 className="font-medium text-sm">Other Services (Multiple)</h3>
                     <div>
                       <Label>Service</Label>
-                      <Select
-                        value={customerData.serviceName}
-                        onValueChange={(value) =>
-                          setCustomerData({
-                            ...customerData,
-                            serviceName: value,
-                            serviceVehicleType: "",
-                            servicePrice: 0,
-                          })
-                        }
-                      >
+                      <Select value={customerData.tempServiceName} onValueChange={(value) => setCustomerData({...customerData, tempServiceName: value, tempServiceVehicleType: ""})}>
                         <SelectTrigger data-testid="select-service-name">
                           <SelectValue placeholder="Select service" />
                         </SelectTrigger>
@@ -566,32 +565,46 @@ export default function CustomerRegistration() {
                       </Select>
                     </div>
 
-                    {customerData.serviceName && (
+                    {customerData.tempServiceName && (
                       <div>
                         <Label>Vehicle Type</Label>
-                        <Select
-                          value={customerData.serviceVehicleType}
-                          onValueChange={(value) => {
-                            const serviceData = OTHER_SERVICES[customerData.serviceName as keyof typeof OTHER_SERVICES];
-                            const price = serviceData[value as keyof typeof serviceData] as number;
-                            setCustomerData({
-                              ...customerData,
-                              serviceVehicleType: value,
-                              servicePrice: price,
-                            });
-                          }}
-                        >
+                        <Select value={customerData.tempServiceVehicleType} onValueChange={(value) => setCustomerData({...customerData, tempServiceVehicleType: value})}>
                           <SelectTrigger data-testid="select-service-vehicle">
                             <SelectValue placeholder="Select vehicle type" />
                           </SelectTrigger>
                           <SelectContent>
-                            {Object.entries(OTHER_SERVICES[customerData.serviceName as keyof typeof OTHER_SERVICES]).map(([type, price]) => (
+                            {Object.entries(OTHER_SERVICES[customerData.tempServiceName as keyof typeof OTHER_SERVICES]).map(([type, price]) => (
                               <SelectItem key={type} value={type}>
                                 {type} - ₹{(price as number).toLocaleString('en-IN')}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
+                        <Button type="button" size="sm" className="mt-2 w-full" onClick={() => {
+                          if (customerData.tempServiceName && customerData.tempServiceVehicleType) {
+                            const price = OTHER_SERVICES[customerData.tempServiceName as keyof typeof OTHER_SERVICES][customerData.tempServiceVehicleType as string] as number;
+                            setCustomerData({
+                              ...customerData,
+                              selectedOtherServices: [...customerData.selectedOtherServices, {name: customerData.tempServiceName, vehicleType: customerData.tempServiceVehicleType, price}],
+                              tempServiceName: "",
+                              tempServiceVehicleType: ""
+                            });
+                          }
+                        }} data-testid="button-add-service">Add Service</Button>
+                      </div>
+                    )}
+
+                    {customerData.selectedOtherServices.length > 0 && (
+                      <div className="space-y-2">
+                        <Label>Selected Services</Label>
+                        <div className="space-y-1">
+                          {customerData.selectedOtherServices.map((svc, idx) => (
+                            <div key={idx} className="flex items-center justify-between p-2 bg-accent/20 rounded text-sm">
+                              <span>{svc.name} - ₹{svc.price.toLocaleString('en-IN')}</span>
+                              <button type="button" onClick={() => setCustomerData({...customerData, selectedOtherServices: customerData.selectedOtherServices.filter((_, i) => i !== idx)})} className="text-red-500 text-xs" data-testid={`button-remove-service-${idx}`}>Remove</button>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>

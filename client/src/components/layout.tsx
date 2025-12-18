@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 const navItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/register', label: 'Register Customers', icon: UserPlus },
-  { href: '/funnel', label: 'Customers Funnel', icon: Filter },
+  { href: '/registered-customers', label: 'Registered Customers', icon: Filter },
   { href: '/customer-service', label: 'Customers Service', icon: Wrench },
   { href: '/jobs', label: 'Service Funnel', icon: Wrench },
   { href: '/invoices', label: 'Invoices & Tracking', icon: FileText },

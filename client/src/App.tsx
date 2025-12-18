@@ -8,7 +8,7 @@ import Dashboard from "@/pages/dashboard";
 import ServiceFunnel from "@/pages/jobs";
 import Customers from "@/pages/customers";
 import CustomerRegistration from "@/pages/register";
-import CustomerFunnel from "@/pages/funnel";
+import RegisteredCustomers from "@/pages/registered-customers";
 import CustomerService from "@/pages/customer-service";
 import Technicians from "@/pages/technicians";
 import Inventory from "@/pages/inventory";
@@ -23,7 +23,8 @@ function Router() {
       <Switch>
         <Route path="/" component={Dashboard} />
         <Route path="/register" component={CustomerRegistration} />
-        <Route path="/funnel" component={CustomerFunnel} />
+        <Route path="/registered-customers" component={RegisteredCustomers} />
+        <Route path="/funnel" component={RegisteredCustomers} />
         <Route path="/customers" component={Customers} />
         <Route path="/customer-service" component={CustomerService} />
         <Route path="/jobs" component={ServiceFunnel} />

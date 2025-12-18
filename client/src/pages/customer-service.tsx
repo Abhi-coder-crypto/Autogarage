@@ -23,7 +23,8 @@ export default function CustomerService() {
   const [selectedVehicleIndex, setSelectedVehicleIndex] = useState<string>('');
   const [selectedTechnicianId, setSelectedTechnicianId] = useState<string>('');
   const [serviceNotes, setServiceNotes] = useState('');
-  const [serviceCost, setServiceCost] = useState<string>('');
+  const [originalServiceCost, setOriginalServiceCost] = useState<string>('');
+  const [discountPercentage, setDiscountPercentage] = useState<string>('0');
   const [laborCost, setLaborCost] = useState<string>('');
   const [selectedItems, setSelectedItems] = useState<{ inventoryId: string; quantity: number; name: string; price: number }[]>([]);
   const [selectedItemId, setSelectedItemId] = useState<string>('');
@@ -84,7 +85,8 @@ export default function CustomerService() {
     setSelectedVehicleIndex('');
     setSelectedTechnicianId('');
     setServiceNotes('');
-    setServiceCost('');
+    setOriginalServiceCost('');
+    setDiscountPercentage('0');
     setLaborCost('');
     setSelectedItems([]);
     setSelectedItemId('');
@@ -96,7 +98,8 @@ export default function CustomerService() {
   // Auto-fill service cost when customer is selected
   useEffect(() => {
     if (selectedCustomer && selectedCustomer.serviceCost > 0) {
-      setServiceCost(selectedCustomer.serviceCost.toString());
+      setOriginalServiceCost(selectedCustomer.serviceCost.toString());
+      setDiscountPercentage('0');
     }
   }, [selectedCustomerId, selectedCustomer]);
 
@@ -156,7 +159,9 @@ export default function CustomerService() {
       return;
     }
 
-    const parsedServiceCost = parseFloat(serviceCost) || 0;
+    const original = parseFloat(originalServiceCost) || 0;
+    const discountPct = parseFloat(discountPercentage) || 0;
+    const parsedServiceCost = original * (1 - discountPct / 100);
     const parsedLaborCost = parseFloat(laborCost) || 0;
     
     if (parsedServiceCost <= 0 && parsedLaborCost <= 0) {
@@ -195,9 +200,13 @@ export default function CustomerService() {
     });
   };
 
-  const parsedServiceCost = parseFloat(serviceCost) || 0;
+  const original = parseFloat(originalServiceCost) || 0;
+  const discountPct = parseFloat(discountPercentage) || 0;
+  const discountedServiceCost = original * (1 - discountPct / 100);
   const parsedLaborCost = parseFloat(laborCost) || 0;
-  const totalCost = parsedServiceCost + parsedLaborCost;
+  const subtotal = discountedServiceCost + parsedLaborCost;
+  const gst = subtotal * 0.18;
+  const totalCost = subtotal + gst;
 
   return (
     <div className="space-y-6">
@@ -286,20 +295,34 @@ export default function CustomerService() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Service Cost *</Label>
+                  <Label>Original Service Cost *</Label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
                     <Input
                       type="number"
                       min="0"
                       step="0.01"
-                      value={serviceCost}
-                      onChange={(e) => setServiceCost(e.target.value)}
-                      placeholder="Enter service charge"
+                      value={originalServiceCost}
+                      onChange={(e) => setOriginalServiceCost(e.target.value)}
+                      placeholder="Enter original service charge"
                       className="pl-7"
-                      data-testid="input-service-cost"
+                      data-testid="input-original-service-cost"
                     />
                   </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Discount %</Label>
+                  <Input
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.01"
+                    value={discountPercentage}
+                    onChange={(e) => setDiscountPercentage(e.target.value)}
+                    placeholder="Enter discount percentage"
+                    data-testid="input-discount-percentage"
+                  />
                 </div>
 
                 <div className="space-y-2">
@@ -395,12 +418,32 @@ export default function CustomerService() {
                 <div className="border rounded-lg p-4 bg-accent/30 space-y-2">
                   <h4 className="font-semibold text-sm text-muted-foreground">Cost Summary</h4>
                   <div className="flex justify-between text-sm">
-                    <span>Service Cost:</span>
-                    <span>₹{parsedServiceCost.toLocaleString('en-IN')}</span>
+                    <span>Original Service Cost:</span>
+                    <span>₹{original.toLocaleString('en-IN')}</span>
                   </div>
+                  {discountPct > 0 && (
+                    <>
+                      <div className="flex justify-between text-sm">
+                        <span>Discount ({discountPct}%):</span>
+                        <span className="text-green-600">-₹{(original * discountPct / 100).toLocaleString('en-IN')}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>Discounted Price:</span>
+                        <span>₹{discountedServiceCost.toLocaleString('en-IN')}</span>
+                      </div>
+                    </>
+                  )}
                   <div className="flex justify-between text-sm">
                     <span>Labor Cost:</span>
                     <span>₹{parsedLaborCost.toLocaleString('en-IN')}</span>
+                  </div>
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>Subtotal:</span>
+                    <span>₹{subtotal.toLocaleString('en-IN')}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>GST (18%):</span>
+                    <span>₹{gst.toLocaleString('en-IN')}</span>
                   </div>
                   <div className="border-t pt-2 mt-2">
                     <div className="flex justify-between font-bold text-lg">
@@ -408,7 +451,6 @@ export default function CustomerService() {
                       <span className="text-primary">₹{totalCost.toLocaleString('en-IN')}</span>
                     </div>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-2">GST will be calculated and added to invoice</p>
                 </div>
               </div>
             </div>
