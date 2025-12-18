@@ -71,8 +71,7 @@ export default function Inventory() {
       category: formData.get('category') as string,
       quantity: parseInt(formData.get('quantity') as string, 10),
       unit: formData.get('unit') as string,
-      minStock: parseInt(formData.get('minStock') as string, 10),
-      price: parseInt(formData.get('price') as string, 10)
+      minStock: parseInt(formData.get('minStock') as string, 10)
     });
   };
 
@@ -158,10 +157,6 @@ export default function Inventory() {
                   <Label>Min Stock *</Label>
                   <Input name="minStock" type="number" step="1" min="0" required placeholder="0" data-testid="input-min-stock" />
                 </div>
-              </div>
-              <div className="space-y-2">
-                <Label>Price per Unit (₹) *</Label>
-                <Input name="price" type="number" step="1" min="0" required placeholder="0" data-testid="input-price" />
               </div>
               <Button 
                 type="submit" 
@@ -254,10 +249,6 @@ export default function Inventory() {
                     Below minimum ({item.minStock} {item.unit})
                   </p>
                 )}
-
-                <div className="text-sm text-muted-foreground">
-                  ₹{item.price.toLocaleString('en-IN')} per {item.unit}
-                </div>
 
                 <div className="flex gap-2">
                   <Button
