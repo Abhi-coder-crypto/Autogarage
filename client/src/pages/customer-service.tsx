@@ -234,21 +234,14 @@ export default function CustomerService() {
 
   useEffect(() => {
     if (ppfCategory && ppfVehicleType && ppfWarranty) {
-      // Only recalculate price if we don't already have one from saved preferences
-      // This prevents overwriting saved prices with catalog values
-      if (ppfPrice === 0 || !isLoadingLastService) {
-        const categoryData = PPF_CATEGORIES[ppfCategory];
-        if (categoryData && categoryData[ppfVehicleType] && categoryData[ppfVehicleType][ppfWarranty]) {
-          setPpfPrice(categoryData[ppfVehicleType][ppfWarranty]);
-        }
+      const categoryData = PPF_CATEGORIES[ppfCategory];
+      if (categoryData && categoryData[ppfVehicleType] && categoryData[ppfVehicleType][ppfWarranty]) {
+        setPpfPrice(categoryData[ppfVehicleType][ppfWarranty]);
       }
-    } else if (!ppfCategory || !ppfVehicleType || !ppfWarranty) {
-      // Only clear price if selections are incomplete
-      if (ppfPrice > 0) {
-        setPpfPrice(0);
-      }
+    } else {
+      setPpfPrice(0);
     }
-  }, [ppfCategory, ppfVehicleType, ppfWarranty, isLoadingLastService]);
+  }, [ppfCategory, ppfVehicleType, ppfWarranty]);
 
   const handleAddVehicle = () => {
     if (!selectedCustomerId) {
