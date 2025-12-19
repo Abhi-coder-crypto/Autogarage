@@ -105,77 +105,77 @@ export default function CustomerFunnel() {
   );
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="font-display text-3xl font-bold tracking-tight" data-testid="text-funnel-title">
-            Customer Funnel
-          </h1>
-          <p className="text-muted-foreground mt-1 text-sm">
-            Track customer journey through different stages
-          </p>
-        </div>
-        <div className="relative w-full md:w-80">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search by name, phone, or car..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 h-9"
-            data-testid="input-search-customer"
-          />
+    <div className="space-y-8">
+      <div className="pb-6 border-b border-slate-200">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div>
+            <h1 className="font-display text-5xl font-bold tracking-tight text-slate-900" data-testid="text-funnel-title">
+              Customer Funnel
+            </h1>
+            <p className="text-slate-600 mt-3 font-medium">Track customer journey through different stages</p>
+          </div>
+          <div className="relative w-full md:w-80">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Input
+              placeholder="Search by name, phone, or car..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 h-9 border-slate-300 bg-white text-slate-900 placeholder:text-slate-400"
+              data-testid="input-search-customer"
+            />
+          </div>
         </div>
       </div>
 
       {/* Rows for each stage */}
       {isLoading ? (
-        <div className="text-center py-8 text-muted-foreground">Loading...</div>
+        <div className="text-center py-8 text-slate-500">Loading...</div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-6">
           {FUNNEL_STAGES.map((stage) => (
-            <div key={stage.key} className={cn("rounded-lg border p-3", STAGE_BG_COLORS[stage.key])}>
-              <div className="flex items-center gap-3 mb-2">
-                <Badge className={PHASE_COLORS[stage.key]}>{stage.label}</Badge>
-                <span className="text-xs text-muted-foreground font-medium">({stageCounts[stage.key]}) customers</span>
+            <div key={stage.key} className={cn("rounded-lg border p-4 bg-gradient-to-br", STAGE_BG_COLORS[stage.key], "border-slate-200")}>
+              <div className="flex items-center gap-3 mb-4">
+                <Badge className={cn(PHASE_COLORS[stage.key], "px-3 py-1 text-sm font-semibold")}>{stage.label}</Badge>
+                <span className="text-sm text-slate-600 font-medium">({stageCounts[stage.key]}) customers</span>
               </div>
 
               {getCustomersByStatus(stage.key).length === 0 ? (
-                <p className="text-xs text-muted-foreground">No customers</p>
+                <p className="text-sm text-slate-500">No customers</p>
               ) : (
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-3">
                   {getCustomersByStatus(stage.key).map((customer: any) => (
                     <Card
                       key={customer._id}
-                      className="bg-background border-border flex-shrink-0 w-48"
+                      className="bg-white border-slate-200 flex-shrink-0 w-48 hover:shadow-md transition-shadow hover-elevate"
                       data-testid={`funnel-customer-${customer._id}`}
                     >
-                      <CardContent className="p-2.5 space-y-1.5">
+                      <CardContent className="p-3 space-y-2">
                         {/* Header */}
-                        <div className="flex items-start justify-between gap-1">
+                        <div className="flex items-start justify-between gap-1 pb-2 border-b border-slate-100">
                           <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-xs truncate">{customer.name}</h4>
-                            <p className="text-xs text-muted-foreground flex items-center gap-0.5">
-                              <Phone className="w-2.5 h-2.5" />
+                            <h4 className="font-semibold text-sm text-slate-900 truncate">{customer.name}</h4>
+                            <p className="text-xs text-slate-600 flex items-center gap-0.5 mt-1">
+                              <Phone className="w-3 h-3" />
                               <span className="truncate">{customer.phone}</span>
                             </p>
                           </div>
-                          <Badge className={cn(PHASE_COLORS[stage.key], "text-xs flex-shrink-0")}>
+                          <Badge className={cn(PHASE_COLORS[stage.key], "text-xs flex-shrink-0 font-semibold")}>
                             {stage.label}
                           </Badge>
                         </div>
 
                         {/* Address */}
                         {customer.address && (
-                          <p className="text-xs text-muted-foreground flex items-start gap-0.5 line-clamp-1">
-                            <MapPin className="w-2.5 h-2.5 mt-0.5 flex-shrink-0" />
+                          <p className="text-xs text-slate-600 flex items-start gap-0.5 line-clamp-1">
+                            <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0" />
                             <span className="truncate">{customer.address}</span>
                           </p>
                         )}
 
                         {/* Vehicle */}
                         {customer.vehicles && customer.vehicles.length > 0 && (
-                          <p className="text-xs text-muted-foreground flex items-center gap-0.5">
-                            <Car className="w-2.5 h-2.5" />
+                          <p className="text-xs text-slate-600 flex items-center gap-0.5">
+                            <Car className="w-3 h-3" />
                             <span className="truncate">
                               {customer.vehicles[0].make} {customer.vehicles[0].model}
                             </span>
@@ -192,7 +192,7 @@ export default function CustomerFunnel() {
                             });
                           }}
                         >
-                          <SelectTrigger className="h-7 text-xs" data-testid={`select-status-${customer._id}`}>
+                          <SelectTrigger className="h-8 text-xs border-slate-200 bg-white" data-testid={`select-status-${customer._id}`}>
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -205,40 +205,40 @@ export default function CustomerFunnel() {
                         </Select>
 
                         {/* Action Buttons */}
-                        <div className="flex gap-1 pt-0.5">
+                        <div className="flex gap-1.5 pt-2 border-t border-slate-100">
                           <Button
                             variant="outline"
                             size="sm"
-                            className="h-6 text-xs flex-1 px-1.5"
+                            className="h-7 text-xs flex-1 px-1.5 border-slate-200 text-slate-700"
                             onClick={() => {
                               setSelectedCustomer(customer);
                               setDetailsOpen(true);
                             }}
                             data-testid={`button-view-${customer._id}`}
                           >
-                            <Eye className="w-2.5 h-2.5" />
+                            <Eye className="w-3 h-3" />
                           </Button>
                           {getCustomerJobHistory(customer._id).length > 0 && (
                             <Button
                               variant="outline"
                               size="sm"
-                              className="h-6 text-xs flex-1 px-1.5"
+                              className="h-7 text-xs flex-1 px-1.5 border-slate-200 text-slate-700"
                               onClick={() => {
                                 setHistoryCustomer(customer);
                                 setHistoryOpen(true);
                               }}
                               data-testid={`button-history-${customer._id}`}
                             >
-                              <History className="w-2.5 h-2.5" />
+                              <History className="w-3 h-3" />
                             </Button>
                           )}
                           <Link href={`/customer-service?customerId=${customer._id}`}>
                             <Button
                               size="sm"
-                              className="h-6 text-xs flex-1 px-1.5 bg-blue-500 hover:bg-blue-600"
+                              className="h-7 text-xs flex-1 px-1.5 bg-gradient-to-r from-primary to-primary/90 text-white hover:shadow-lg transition-all"
                               data-testid={`button-create-service-${customer._id}`}
                             >
-                              <Wrench className="w-2.5 h-2.5" />
+                              <Wrench className="w-3 h-3" />
                             </Button>
                           </Link>
                         </div>
@@ -256,22 +256,22 @@ export default function CustomerFunnel() {
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
         <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Customer Details</DialogTitle>
+            <DialogTitle className="text-2xl font-bold text-slate-900">Customer Details</DialogTitle>
           </DialogHeader>
           {selectedCustomer && (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {/* Personal Information - Compact */}
-              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                <p className="text-xs font-semibold text-muted-foreground mb-2">PERSONAL INFORMATION</p>
-                <div className="space-y-1.5 text-sm">
+              <div className="p-4 bg-gradient-to-br from-slate-50 to-white rounded-lg border border-slate-200">
+                <p className="text-xs font-semibold text-slate-700 mb-3 uppercase tracking-wider">Personal Information</p>
+                <div className="space-y-2 text-sm">
                   <div className="flex items-center gap-2">
-                    <span className="font-medium min-w-fit">Name:</span>
-                    <p className="truncate">{selectedCustomer.name}</p>
+                    <span className="font-semibold text-slate-900 min-w-fit">Name:</span>
+                    <p className="text-slate-600 truncate">{selectedCustomer.name}</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Phone className="w-3 h-3 text-muted-foreground flex-shrink-0" />
-                    <span className="font-medium min-w-fit">Phone:</span>
-                    <p className="truncate">{selectedCustomer.phone}</p>
+                    <Phone className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                    <span className="font-semibold text-slate-900 min-w-fit">Phone:</span>
+                    <p className="text-slate-600 truncate">{selectedCustomer.phone}</p>
                   </div>
                   {selectedCustomer.email && (
                     <div className="flex items-center gap-2">
@@ -293,8 +293,8 @@ export default function CustomerFunnel() {
               </div>
 
               {/* Service Information - Compact */}
-              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                <p className="text-xs font-semibold text-muted-foreground mb-2">SERVICE INFORMATION</p>
+              <div className="p-4 bg-gradient-to-br from-slate-50 to-white rounded-lg border border-slate-200">
+                <p className="text-xs font-semibold text-slate-700 mb-3 uppercase tracking-wider">Service Information</p>
                 <div className="space-y-1.5 text-sm">
                   <div className="flex items-center gap-2">
                     <span className="font-medium min-w-fit">Status:</span>
@@ -329,14 +329,14 @@ export default function CustomerFunnel() {
               </div>
 
               {/* Summary Stats - Compact */}
-              <div className="grid grid-cols-2 gap-2 p-2">
-                <div className="p-2 bg-gray-50 rounded text-center border border-gray-200">
-                  <p className="text-xs text-muted-foreground font-medium">Vehicles</p>
-                  <p className="font-semibold text-base">{selectedCustomer.vehicles?.length || 0}</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="p-4 bg-gradient-to-br from-primary/5 to-white rounded-lg border border-slate-200 text-center">
+                  <p className="text-xs text-slate-700 font-semibold uppercase tracking-wider">Vehicles</p>
+                  <p className="font-bold text-2xl text-primary mt-2">{selectedCustomer.vehicles?.length || 0}</p>
                 </div>
-                <div className="p-2 bg-gray-50 rounded text-center border border-gray-200">
-                  <p className="text-xs text-muted-foreground font-medium">Services</p>
-                  <p className="font-semibold text-base">{jobs.filter((j: any) => j.customerId === selectedCustomer._id).length}</p>
+                <div className="p-4 bg-gradient-to-br from-primary/5 to-white rounded-lg border border-slate-200 text-center">
+                  <p className="text-xs text-slate-700 font-semibold uppercase tracking-wider">Services</p>
+                  <p className="font-bold text-2xl text-primary mt-2">{jobs.filter((j: any) => j.customerId === selectedCustomer._id).length}</p>
                 </div>
               </div>
 
