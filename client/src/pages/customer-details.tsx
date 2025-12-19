@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Phone, MapPin, Car, Mail, DollarSign, Wrench, ArrowLeft } from "lucide-react";
+import { Phone, MapPin, Car, Mail, DollarSign, Wrench, ArrowLeft, Calendar, User } from "lucide-react";
 import { Link, useRoute } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 
@@ -10,6 +11,7 @@ export default function CustomerDetails() {
   const [match, params] = useRoute("/customer-details/:id");
   const customerId = params?.id;
   const { toast } = useToast();
+  const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
 
   const { data: customers = [] } = useQuery({
     queryKey: ["customers"],
@@ -23,6 +25,7 @@ export default function CustomerDetails() {
 
   const customer = customers.find((c: any) => c._id === customerId);
   const jobHistory = jobs.filter((job: any) => job.customerId === customerId);
+  const selectedJob = selectedJobId ? jobHistory.find((j: any) => j._id === selectedJobId) : null;
 
   if (!customer) {
     return (
@@ -130,7 +133,14 @@ export default function CustomerDetails() {
                   <p className="font-semibold text-sm mb-1">History ({jobHistory.length})</p>
                   <div className="p-2 bg-accent/10 rounded border text-xs space-y-1 max-h-20 overflow-y-auto">
                     {jobHistory.slice(0, 3).map((job: any) => (
-                      <div key={job._id} className="pb-1">
+                      <button
+                        key={job._id}
+                        onClick={() => setSelectedJobId(job._id)}
+                        className={`w-full pb-1 text-left hover:bg-accent/20 rounded p-1 transition ${
+                          selectedJobId === job._id ? 'bg-accent/30 border-l-2 border-primary' : ''
+                        }`}
+                        data-testid={`button-history-${job._id}`}
+                      >
                         <div className="flex items-center justify-between gap-1">
                           <span className="truncate font-medium text-xs">{job.vehicleName}</span>
                           <span className="text-xs bg-background px-1 py-0.5 rounded whitespace-nowrap">{job.stage}</span>
@@ -140,7 +150,7 @@ export default function CustomerDetails() {
                             {new Date(job.createdAt).toLocaleDateString('en-IN')}
                           </p>
                         )}
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -157,6 +167,97 @@ export default function CustomerDetails() {
           </Link>
         </CardContent>
       </Card>
+
+      {/* Service History Details - Show all history */}
+      {jobHistory.length > 0 && (
+        <div className="space-y-3">
+          <h2 className="font-semibold text-lg">Service History - All Records</h2>
+          <div className="grid gap-3">
+            {jobHistory.map((job: any) => (
+              <Card
+                key={job._id}
+                onClick={() => setSelectedJobId(job._id)}
+                className={`cursor-pointer border-2 transition ${
+                  selectedJobId === job._id
+                    ? 'border-primary bg-primary/5'
+                    : 'border-border hover:border-primary/50'
+                }`}
+                data-testid={`card-history-detail-${job._id}`}
+              >
+                <CardContent className="p-4 space-y-3">
+                  {/* Header */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1">
+                      <h3 className="font-bold text-base">{job.vehicleName}</h3>
+                      <p className="text-xs text-muted-foreground">{job.plateNumber}</p>
+                    </div>
+                    <span className="text-xs bg-accent px-2 py-1 rounded font-medium">{job.stage}</span>
+                  </div>
+
+                  {/* Details Grid */}
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs">
+                    <div>
+                      <p className="text-muted-foreground font-medium">Date</p>
+                      <div className="flex items-center gap-1 mt-1">
+                        <Calendar className="w-3 h-3" />
+                        <span>{new Date(job.createdAt).toLocaleDateString('en-IN')}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground font-medium">Technician</p>
+                      <div className="flex items-center gap-1 mt-1">
+                        <User className="w-3 h-3" />
+                        <span>{job.technicianName || 'Not assigned'}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground font-medium">Amount</p>
+                      <p className="font-bold text-primary mt-1">₹{job.totalAmount?.toLocaleString('en-IN') || '0'}</p>
+                    </div>
+                  </div>
+
+                  {/* Service Items */}
+                  {job.serviceItems && job.serviceItems.length > 0 && (
+                    <div className="border-t pt-3">
+                      <p className="font-semibold text-xs mb-2">Services</p>
+                      <div className="space-y-1">
+                        {job.serviceItems.map((item: any, idx: number) => (
+                          <div key={idx} className="flex items-center justify-between text-xs bg-accent/10 p-2 rounded">
+                            <span className="truncate">{item.description || item.name || 'Service'}</span>
+                            {item.cost && <span className="font-medium whitespace-nowrap ml-2">₹{item.cost.toLocaleString('en-IN')}</span>}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Payment Status */}
+                  <div className="border-t pt-3 flex items-center justify-between">
+                    <div className="text-xs">
+                      <p className="text-muted-foreground font-medium">Payment Status</p>
+                      <p className="mt-1">{job.paymentStatus}</p>
+                    </div>
+                    {job.paidAmount > 0 && (
+                      <div className="text-xs text-right">
+                        <p className="text-muted-foreground font-medium">Paid</p>
+                        <p className="mt-1 font-bold">₹{job.paidAmount.toLocaleString('en-IN')}</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Notes */}
+                  {job.notes && (
+                    <div className="border-t pt-3">
+                      <p className="font-semibold text-xs mb-1">Notes</p>
+                      <p className="text-xs text-muted-foreground">{job.notes}</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
