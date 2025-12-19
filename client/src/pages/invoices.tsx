@@ -146,61 +146,61 @@ Balance: Rs.${(selectedInvoice.totalAmount - selectedInvoice.paidAmount).toLocal
   const isLoading = invoicesLoading;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-3xl font-bold tracking-tight" data-testid="text-invoices-title">
+    <div className="space-y-8">
+      <div className="pb-6 border-b border-slate-200">
+        <h1 className="font-display text-5xl font-bold tracking-tight text-slate-900" data-testid="text-invoices-title">
           Invoices & Tracking
         </h1>
-        <p className="text-muted-foreground mt-1">
+        <p className="text-slate-600 mt-3 font-medium">
           Manage invoices, track payments, and view billing records
         </p>
       </div>
 
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
-        <Card className="bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800" data-testid="card-total-revenue">
-          <CardContent className="p-5">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
+        <Card className="bg-gradient-to-br from-green-50 to-white border-green-200 shadow-sm" data-testid="card-total-revenue">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-sm text-green-600 dark:text-green-400 font-medium">Total Revenue</p>
-                <p className="text-3xl font-bold mt-1 text-green-900 dark:text-green-100 flex items-center">
+                <p className="text-sm text-green-700 font-semibold uppercase tracking-wider">Total Revenue</p>
+                <p className="text-3xl font-bold mt-3 text-green-900 flex items-center gap-1">
                   <IndianRupee className="w-6 h-6" />
                   {totalRevenue.toLocaleString("en-IN")}
                 </p>
               </div>
-              <div className="p-3 bg-green-100 dark:bg-green-900/50 rounded-lg">
-                <IndianRupee className="w-6 h-6 text-green-600 dark:text-green-400" />
+              <div className="p-4 bg-green-100 rounded-lg">
+                <IndianRupee className="w-6 h-6 text-green-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800" data-testid="card-paid-invoices">
-          <CardContent className="p-5">
+        <Card className="bg-gradient-to-br from-emerald-50 to-white border-emerald-200 shadow-sm" data-testid="card-paid-invoices">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">Paid Invoices</p>
-                <p className="text-3xl font-bold mt-1 text-emerald-900 dark:text-emerald-100">
+                <p className="text-sm text-emerald-700 font-semibold uppercase tracking-wider">Paid Invoices</p>
+                <p className="text-3xl font-bold mt-3 text-emerald-900">
                   {paidInvoices}
                 </p>
               </div>
-              <div className="p-3 bg-emerald-100 dark:bg-emerald-900/50 rounded-lg">
-                <CheckCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+              <div className="p-4 bg-emerald-100 rounded-lg">
+                <CheckCircle className="w-6 h-6 text-emerald-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-50 border-gray-200" data-testid="card-unpaid-invoices">
-          <CardContent className="p-5">
+        <Card className="bg-gradient-to-br from-slate-100 to-white border-slate-200 shadow-sm" data-testid="card-unpaid-invoices">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-sm text-gray-600 font-medium">Unpaid Invoices</p>
-                <p className="text-3xl font-bold mt-1 text-gray-900">
+                <p className="text-sm text-slate-700 font-semibold uppercase tracking-wider">Unpaid Invoices</p>
+                <p className="text-3xl font-bold mt-3 text-slate-900">
                   {unpaidInvoices}
                 </p>
               </div>
-              <div className="p-3 bg-gray-200 rounded-lg">
-                <FileText className="w-6 h-6 text-gray-600" />
+              <div className="p-4 bg-slate-200 rounded-lg">
+                <FileText className="w-6 h-6 text-slate-600" />
               </div>
             </div>
           </CardContent>
@@ -208,28 +208,28 @@ Balance: Rs.${(selectedInvoice.totalAmount - selectedInvoice.paidAmount).toLocal
       </div>
 
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
         <Input
           placeholder="Search by customer name, vehicle number, or invoice number..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="pl-10"
+          className="pl-10 h-9 border-slate-300 bg-white text-slate-900 placeholder:text-slate-400"
           data-testid="input-search-billing"
         />
       </div>
 
-      <Card className="border-border">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-blue-500" />
+      <Card className="bg-gradient-to-br from-white to-slate-50 border-slate-200 shadow-sm">
+        <CardHeader className="pb-4 border-b border-slate-200 bg-gradient-to-r from-primary/5 to-transparent">
+          <CardTitle className="flex items-center gap-3 text-lg text-slate-900 font-semibold">
+            <FileText className="w-5 h-5 text-primary" />
             Invoices
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           {isLoading ? (
-            <p className="text-muted-foreground text-center py-8">Loading...</p>
+            <p className="text-slate-500 text-center py-8">Loading...</p>
           ) : filteredInvoices.length === 0 ? (
-            <p className="text-muted-foreground text-center py-8">
+            <p className="text-slate-500 text-center py-8">
               No invoices found
             </p>
           ) : (
@@ -237,21 +237,21 @@ Balance: Rs.${(selectedInvoice.totalAmount - selectedInvoice.paidAmount).toLocal
               {filteredInvoices.map((invoice: any) => (
                 <div
                   key={invoice._id}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex-wrap gap-4 border border-gray-200"
+                  className="flex items-center justify-between p-4 bg-gradient-to-r from-white to-slate-50 rounded-lg hover:shadow-md transition-all flex-wrap gap-4 border border-slate-200 hover-elevate"
                   data-testid={`invoice-item-${invoice._id}`}
                 >
                   <div className="flex items-center gap-4">
-                    <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                      <FileText className="w-5 h-5 text-blue-500" />
+                    <div className="p-3 bg-primary/10 rounded-lg">
+                      <FileText className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium text-foreground">
+                      <p className="font-semibold text-slate-900">
                         {invoice.invoiceNumber}
                       </p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-slate-600">
                         {invoice.customerName} - {invoice.plateNumber}
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-slate-500">
                         {new Date(invoice.createdAt).toLocaleDateString("en-IN")}
                       </p>
                     </div>
@@ -259,11 +259,11 @@ Balance: Rs.${(selectedInvoice.totalAmount - selectedInvoice.paidAmount).toLocal
 
                   <div className="flex items-center gap-4 flex-wrap">
                     <div className="text-right">
-                      <p className="font-bold text-foreground flex items-center justify-end">
+                      <p className="font-bold text-slate-900 flex items-center justify-end gap-1">
                         <IndianRupee className="w-4 h-4" />
                         {(invoice.totalAmount || 0).toLocaleString("en-IN")}
                       </p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-slate-600">
                         Paid: <IndianRupee className="w-3 h-3 inline" />
                         {(invoice.paidAmount || 0).toLocaleString("en-IN")}
                       </p>
@@ -275,6 +275,7 @@ Balance: Rs.${(selectedInvoice.totalAmount - selectedInvoice.paidAmount).toLocal
                       <Button
                         variant="outline"
                         size="icon"
+                        className="border-slate-200 text-slate-700"
                         onClick={() => {
                           setSelectedInvoice(invoice);
                           setViewDialogOpen(true);
@@ -286,6 +287,7 @@ Balance: Rs.${(selectedInvoice.totalAmount - selectedInvoice.paidAmount).toLocal
                       <Button
                         variant="outline"
                         size="icon"
+                        className="border-slate-200 text-slate-700"
                         onClick={() => {
                           setSelectedInvoice(invoice);
                           setTimeout(handlePrint, 100);
@@ -297,6 +299,7 @@ Balance: Rs.${(selectedInvoice.totalAmount - selectedInvoice.paidAmount).toLocal
                       <Button
                         variant="outline"
                         size="icon"
+                        className="border-slate-200 text-slate-700"
                         onClick={() => {
                           setSelectedInvoice(invoice);
                           setTimeout(handleDownload, 100);
@@ -308,7 +311,7 @@ Balance: Rs.${(selectedInvoice.totalAmount - selectedInvoice.paidAmount).toLocal
                       {invoice.paymentStatus !== "Paid" && (
                         <Button
                           size="sm"
-                          className="bg-green-600 hover:bg-green-700"
+                          className="bg-gradient-to-r from-green-600 to-green-700 text-white hover:shadow-lg transition-all"
                           onClick={() => markPaidMutation.mutate(invoice._id)}
                           disabled={markPaidMutation.isPending}
                           data-testid={`button-mark-paid-${invoice._id}`}
