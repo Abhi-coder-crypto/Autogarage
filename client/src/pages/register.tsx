@@ -340,29 +340,36 @@ export default function CustomerRegistration() {
 
   return (
     <div className="p-4">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto space-y-8">
         {/* Header */}
-        <div className="mb-6">
+        <div className="pb-6 border-b border-slate-200">
           <h1
-            className="font-display text-3xl font-bold tracking-tight"
+            className="font-display text-5xl font-bold tracking-tight text-slate-900"
             data-testid="text-registration-title"
           >
-            Customer Registration
+            Register Customer
           </h1>
-          <p className="text-muted-foreground mt-1">Fill in customer details and select services</p>
+          <p className="text-slate-600 mt-3 font-medium">Step {step} of 2 - Fill in customer details and select services</p>
+          
+          {/* Progress Bar */}
+          <div className="mt-6 flex gap-2">
+            <div className={`h-1 flex-1 rounded-full transition-colors ${step >= 1 ? 'bg-primary' : 'bg-slate-200'}`} />
+            <div className={`h-1 flex-1 rounded-full transition-colors ${step >= 2 ? 'bg-primary' : 'bg-slate-200'}`} />
+          </div>
         </div>
 
         {/* Step 1: Customer Information */}
         {step === 1 && (
           <Card
-            className="border-orange-200 dark:border-orange-800"
+            className="bg-gradient-to-br from-white to-slate-50 border border-slate-200 shadow-sm"
             data-testid="card-customer-info"
           >
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-base">
-                <User className="w-4 h-4 text-blue-500" />
+            <CardHeader className="pb-4 border-b border-slate-200 bg-gradient-to-r from-primary/5 to-transparent">
+              <CardTitle className="flex items-center gap-3 text-lg text-slate-900 font-semibold">
+                <User className="w-5 h-5 text-primary" />
                 Customer Information
               </CardTitle>
+              <p className="text-sm text-slate-600 mt-2">Provide your personal details and service preferences</p>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -601,13 +608,13 @@ export default function CustomerRegistration() {
                     )}
 
                     {customerData.selectedOtherServices.length > 0 && (
-                      <div className="space-y-2">
-                        <Label>Selected Services</Label>
-                        <div className="space-y-1">
+                      <div className="space-y-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <Label className="font-semibold text-slate-900">Selected Services</Label>
+                        <div className="space-y-2">
                           {customerData.selectedOtherServices.map((svc, idx) => (
-                            <div key={idx} className="flex items-center justify-between p-2 bg-gray-50 rounded text-sm border border-gray-200">
-                              <span>{svc.name} - ₹{svc.price.toLocaleString('en-IN')}</span>
-                              <button type="button" onClick={() => setCustomerData({...customerData, selectedOtherServices: customerData.selectedOtherServices.filter((_, i) => i !== idx)})} className="text-red-500 text-xs" data-testid={`button-remove-service-${idx}`}>Remove</button>
+                            <div key={idx} className="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200 hover:border-slate-300 transition-colors">
+                              <span className="text-sm font-medium text-slate-900">{svc.name} - ₹{svc.price.toLocaleString('en-IN')}</span>
+                              <button type="button" onClick={() => setCustomerData({...customerData, selectedOtherServices: customerData.selectedOtherServices.filter((_, i) => i !== idx)})} className="text-red-600 text-xs font-semibold hover:text-red-700" data-testid={`button-remove-service-${idx}`}>Remove</button>
                             </div>
                           ))}
                         </div>
@@ -674,11 +681,11 @@ export default function CustomerRegistration() {
                 </div>
               </div>
 
-              <div className="flex justify-end pt-4">
+              <div className="flex justify-end pt-6 border-t border-slate-200">
                 <Button
                   onClick={handleNextStep}
                   disabled={!canProceedStep1}
-                  className="bg-blue-500 hover:bg-blue-600"
+                  className="bg-gradient-to-r from-primary to-primary/90 text-white hover:shadow-lg transition-all"
                   data-testid="button-next-step"
                 >
                   Next Step
@@ -692,15 +699,15 @@ export default function CustomerRegistration() {
         {/* Step 2: Vehicle Details */}
         {step === 2 && (
           <Card
-            className="border-orange-200 dark:border-orange-800"
+            className="bg-gradient-to-br from-white to-slate-50 border border-slate-200 shadow-sm"
             data-testid="card-vehicle-info"
           >
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Car className="w-5 h-5 text-blue-500" />
+            <CardHeader className="pb-4 border-b border-slate-200 bg-gradient-to-r from-primary/5 to-transparent">
+              <CardTitle className="flex items-center gap-3 text-lg text-slate-900 font-semibold">
+                <Car className="w-5 h-5 text-primary" />
                 Vehicle Details
               </CardTitle>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-slate-600 mt-2">
                 Please provide your vehicle information
               </p>
             </CardHeader>
@@ -732,7 +739,7 @@ export default function CustomerRegistration() {
 
                 <div className="space-y-2">
                   <Label>Vehicle Type</Label>
-                  <div className="px-3 py-2 bg-muted rounded-md text-sm" data-testid="display-vehicle-type">
+                  <div className="px-4 py-3 bg-slate-100 border border-slate-200 rounded-lg text-sm font-medium text-slate-900" data-testid="display-vehicle-type">
                     {vehicleData.vehicleType || 'Not selected'}
                   </div>
                 </div>
@@ -792,10 +799,11 @@ export default function CustomerRegistration() {
                 </div>
               </div>
 
-              <div className="flex justify-between pt-4">
+              <div className="flex justify-between pt-6 border-t border-slate-200">
                 <Button
                   variant="outline"
                   onClick={() => setStep(1)}
+                  className="border-slate-300 text-slate-700 hover:bg-slate-100"
                   data-testid="button-prev-step"
                 >
                   <ChevronLeft className="w-4 h-4 mr-2" />
@@ -806,7 +814,7 @@ export default function CustomerRegistration() {
                   disabled={
                     !canProceedStep2 || createCustomerMutation.isPending
                   }
-                  className="bg-green-500 hover:bg-green-600"
+                  className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white hover:shadow-lg transition-all"
                   data-testid="button-submit-registration"
                 >
                   {createCustomerMutation.isPending
