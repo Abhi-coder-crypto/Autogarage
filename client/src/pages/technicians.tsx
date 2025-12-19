@@ -72,23 +72,23 @@ export default function Technicians() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-slate-200">
         <div>
-          <h1 className="font-display text-3xl font-bold tracking-tight">Technicians</h1>
-          <p className="text-muted-foreground mt-1">Manage your workshop team</p>
+          <h1 className="font-display text-5xl font-bold tracking-tight text-slate-900">Technicians</h1>
+          <p className="text-slate-600 mt-3 font-medium">Manage your workshop team</p>
         </div>
         
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-primary hover:bg-primary/90" data-testid="button-new-technician">
+            <Button className="bg-gradient-to-r from-primary to-primary/90 text-white hover:shadow-lg transition-all" data-testid="button-new-technician">
               <Plus className="w-4 h-4 mr-2" />
               Add Technician
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>Add New Technician</DialogTitle>
+              <DialogTitle className="text-2xl font-bold text-slate-900">Add New Technician</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleCreateTechnician} className="space-y-4">
               <div className="space-y-2">
@@ -105,7 +105,7 @@ export default function Technicians() {
               </div>
               <Button 
                 type="submit" 
-                className="w-full bg-primary"
+                className="w-full bg-gradient-to-r from-primary to-primary/90 text-white hover:shadow-lg transition-all"
                 disabled={createTechnicianMutation.isPending}
                 data-testid="button-submit-technician"
               >
@@ -116,11 +116,11 @@ export default function Technicians() {
         </Dialog>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {isLoading ? (
-          <div className="col-span-full text-center py-8 text-muted-foreground">Loading technicians...</div>
+          <div className="col-span-full text-center py-8 text-slate-500">Loading technicians...</div>
         ) : technicians.length === 0 ? (
-          <div className="col-span-full text-center py-8 text-muted-foreground">
+          <div className="col-span-full text-center py-8 text-slate-500">
             No technicians yet. Add your first technician!
           </div>
         ) : (
@@ -129,18 +129,18 @@ export default function Technicians() {
             return (
               <Card 
                 key={tech._id} 
-                className="card-modern"
+                className="bg-gradient-to-br from-white to-slate-50 border-slate-200 shadow-sm hover:shadow-md transition-all hover-elevate"
                 data-testid={`technician-card-${tech._id}`}
               >
-                <CardHeader className="pb-3">
+                <CardHeader className="pb-4 border-b border-slate-200 bg-gradient-to-r from-primary/5 to-transparent">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-gray-100 rounded-lg">
+                      <div className="p-3 bg-primary/10 rounded-lg">
                         <Wrench className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <CardTitle className="text-lg">{tech.name}</CardTitle>
-                        <p className="text-sm text-muted-foreground flex items-center gap-1">
+                        <CardTitle className="text-lg font-semibold text-slate-900">{tech.name}</CardTitle>
+                        <p className="text-sm text-slate-600 flex items-center gap-1 mt-1">
                           <Briefcase className="w-3 h-3" />
                           {tech.specialty}
                         </p>
@@ -148,22 +148,22 @@ export default function Technicians() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 pt-4">
                   {tech.phone && (
-                    <p className="text-sm text-muted-foreground flex items-center gap-1">
-                      <Phone className="w-3 h-3" />
+                    <p className="text-sm text-slate-600 flex items-center gap-2">
+                      <Phone className="w-4 h-4" />
                       {tech.phone}
                     </p>
                   )}
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Status</span>
+                    <span className="text-sm font-medium text-slate-700">Status</span>
                     <Select
                       value={tech.status}
                       onValueChange={(status) => updateStatusMutation.mutate({ id: tech._id, status })}
                     >
                       <SelectTrigger 
-                        className={cn("w-32 border", STATUS_COLORS[tech.status])}
+                        className={cn("w-32 border-slate-200 bg-white", STATUS_COLORS[tech.status])}
                         data-testid={`status-select-${tech._id}`}
                       >
                         <SelectValue />
@@ -176,22 +176,22 @@ export default function Technicians() {
                     </Select>
                   </div>
 
-                  <div className="p-3 bg-gray-100 rounded-lg border border-gray-200">
+                  <div className="p-4 bg-gradient-to-br from-slate-50 to-white rounded-lg border border-slate-200">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-700">Active Jobs</span>
+                      <span className="text-sm font-medium text-slate-700">Active Jobs</span>
                       <Badge 
                         variant="outline"
                         className={cn(
-                          jobCount > 2 && 'border-gray-400 text-gray-700 bg-gray-50',
-                          jobCount > 0 && jobCount <= 2 && 'border-yellow-500/30 text-yellow-400',
-                          jobCount === 0 && 'border-green-500/30 text-green-400'
+                          jobCount > 2 && 'border-orange-300 text-orange-700 bg-orange-50',
+                          jobCount > 0 && jobCount <= 2 && 'border-yellow-300 text-yellow-700 bg-yellow-50',
+                          jobCount === 0 && 'border-green-300 text-green-700 bg-green-50'
                         )}
                       >
                         {jobCount}
                       </Badge>
                     </div>
                     {jobCount > 2 && (
-                      <p className="text-xs text-gray-700 mt-1">High workload</p>
+                      <p className="text-xs text-orange-700 mt-2 font-medium">High workload</p>
                     )}
                   </div>
                 </CardContent>
