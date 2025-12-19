@@ -168,20 +168,18 @@ export default function CustomerDetails() {
         </CardContent>
       </Card>
 
-      {/* Service History Details - Show all history */}
-      {jobHistory.length > 0 && (
+      {/* Service History Details - Show only selected */}
+      {selectedJobId && jobHistory.length > 0 && (
         <div className="space-y-3">
-          <h2 className="font-semibold text-lg">Service History - All Records</h2>
+          <h2 className="font-semibold text-lg">Service History Details</h2>
           <div className="grid gap-3">
-            {jobHistory.map((job: any) => (
+            {jobHistory
+              .filter((job: any) => job._id === selectedJobId)
+              .map((job: any) => (
               <Card
                 key={job._id}
-                onClick={() => setSelectedJobId(job._id)}
-                className={`cursor-pointer border-2 transition ${
-                  selectedJobId === job._id
-                    ? 'border-primary bg-primary/5'
-                    : 'border-border hover:border-primary/50'
-                }`}
+                onClick={() => setSelectedJobId(null)}
+                className={`cursor-pointer border-2 border-primary bg-primary/5 transition hover:bg-primary/10`}
                 data-testid={`card-history-detail-${job._id}`}
               >
                 <CardContent className="p-4 space-y-3">
