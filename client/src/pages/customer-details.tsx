@@ -135,7 +135,7 @@ export default function CustomerDetails() {
                     {jobHistory.slice(0, 3).map((job: any) => (
                       <button
                         key={job._id}
-                        onClick={() => setSelectedJobId(job._id)}
+                        onClick={() => setSelectedJobId(selectedJobId === job._id ? null : job._id)}
                         className={`w-full pb-1 text-left hover:bg-accent/20 rounded p-1 transition ${
                           selectedJobId === job._id ? 'bg-accent/30 border-l-2 border-primary' : ''
                         }`}

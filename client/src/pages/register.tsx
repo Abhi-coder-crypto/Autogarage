@@ -298,6 +298,11 @@ export default function CustomerRegistration() {
           plateNumber: vehicleData.plateNumber,
           color: vehicleData.color,
           vin: vehicleData.chassisNumber,
+          ppfCategory: customerData.ppfCategory,
+          ppfVehicleType: customerData.ppfVehicleType,
+          ppfWarranty: customerData.ppfWarranty,
+          ppfPrice: customerData.ppfPrice,
+          laborCost: 0,
         },
       ],
     });
