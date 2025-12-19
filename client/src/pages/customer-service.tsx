@@ -436,18 +436,19 @@ export default function CustomerService() {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-3xl font-bold tracking-tight">Customers Service</h1>
-        <p className="text-muted-foreground mt-1">Create services for customers with full service selection</p>
+    <div className="space-y-8">
+      <div className="pb-6 border-b border-slate-200">
+        <h1 className="font-display text-5xl font-bold tracking-tight text-slate-900">Customer Service</h1>
+        <p className="text-slate-600 mt-3 font-medium">Create and manage services for your customers</p>
       </div>
 
-      <Card className="card-modern">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Plus className="w-5 h-5" />
+      <Card className="bg-gradient-to-br from-white to-slate-50 border border-slate-200 shadow-sm">
+        <CardHeader className="pb-4 border-b border-slate-200 bg-gradient-to-r from-primary/5 to-transparent">
+          <CardTitle className="flex items-center gap-3 text-lg text-slate-900 font-semibold">
+            <Plus className="w-5 h-5 text-primary" />
             Create New Service
           </CardTitle>
+          <p className="text-sm text-slate-600 mt-2">Select a customer, vehicle, and services to create a new job</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -517,7 +518,7 @@ export default function CustomerService() {
                     </div>
 
                     {showAddVehicle && (
-                      <Card className="border-dashed">
+                      <Card className="bg-gradient-to-br from-slate-50 to-white border border-dashed border-slate-300 shadow-sm">
                         <CardContent className="pt-4 space-y-3">
                           <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-1">
@@ -569,11 +570,12 @@ export default function CustomerService() {
                               />
                             </div>
                           </div>
-                          <div className="flex justify-end gap-2">
+                          <div className="flex justify-end gap-2 pt-3 border-t border-slate-200">
                             <Button
                               type="button"
                               variant="outline"
                               size="sm"
+                              className="border-slate-300 text-slate-700 hover:bg-slate-100"
                               onClick={() => setShowAddVehicle(false)}
                             >
                               Cancel
@@ -581,6 +583,7 @@ export default function CustomerService() {
                             <Button
                               type="button"
                               size="sm"
+                              className="bg-gradient-to-r from-primary to-primary/90 text-white hover:shadow-lg transition-all"
                               onClick={handleAddVehicle}
                               disabled={addVehicleMutation.isPending}
                               data-testid="button-save-new-vehicle"
@@ -613,17 +616,17 @@ export default function CustomerService() {
                   </Select>
                 </div>
 
-                <Card className="border">
-                  <CardHeader className="py-3 cursor-pointer" onClick={() => setShowPpfSection(!showPpfSection)}>
+                <Card className="bg-gradient-to-br from-white to-slate-50 border border-slate-200">
+                  <CardHeader className="py-4 cursor-pointer hover:bg-slate-50/50 transition-colors border-b border-slate-200 bg-gradient-to-r from-primary/5 to-transparent" onClick={() => setShowPpfSection(!showPpfSection)}>
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-base">PPF Service</CardTitle>
-                      {showPpfSection ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                      <CardTitle className="text-base font-semibold text-slate-900">PPF Service</CardTitle>
+                      {showPpfSection ? <ChevronUp className="w-4 h-4 text-slate-600" /> : <ChevronDown className="w-4 h-4 text-slate-600" />}
                     </div>
                   </CardHeader>
                   {showPpfSection && (
-                    <CardContent className="space-y-3">
+                    <CardContent className="space-y-3 pt-4">
                       {selectedVehicleIndex !== '' && ppfCategory && (
-                        <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded p-2 text-sm text-blue-700 dark:text-blue-300">
+                        <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 text-sm text-primary font-medium">
                           Auto-filled from previous service - feel free to edit
                         </div>
                       )}
