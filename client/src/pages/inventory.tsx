@@ -166,11 +166,11 @@ export default function Inventory() {
                     </p>
                   )}
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
                     <Button
                       variant="outline"
                       size="sm"
-                      className="flex-1"
+                      className="flex-1 min-w-24"
                       onClick={() => {
                         setSelectedItem(displayItem);
                         setAdjustType('in');
@@ -186,7 +186,7 @@ export default function Inventory() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="flex-1"
+                      className="flex-1 min-w-24"
                       onClick={() => {
                         setSelectedItem(displayItem);
                         setAdjustType('out');
