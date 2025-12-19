@@ -162,43 +162,54 @@ export default function CustomerService() {
   }, [selectedCustomerId, selectedCustomer]);
 
   useEffect(() => {
-    const loadLastService = async () => {
+    const loadVehiclePreferences = async () => {
       if (!selectedCustomerId || selectedVehicleIndex === '') return;
       
       setIsLoadingLastService(true);
       try {
-        const lastJob = await api.customers.getLastService(selectedCustomerId, parseInt(selectedVehicleIndex, 10));
-        if (lastJob && lastJob.serviceItems && lastJob.serviceItems.length > 0) {
-          const ppfService = lastJob.serviceItems.find((item: any) => item.name.startsWith('PPF'));
-          if (ppfService) {
-            setPpfCategory(ppfService.category || '');
-            setPpfVehicleType(ppfService.vehicleType || '');
-            setPpfWarranty(ppfService.warranty || '');
-          }
-          
-          const otherServices = lastJob.serviceItems.filter((item: any) => !item.name.startsWith('PPF'));
-          if (otherServices.length > 0) {
-            setSelectedOtherServices(otherServices.map((item: any) => ({
-              name: item.name,
-              vehicleType: item.vehicleType || '',
-              price: item.price || 0,
-              category: item.category,
-              warranty: item.warranty
-            })));
-          }
-          
-          if (lastJob.laborCost) {
-            setLaborCost(lastJob.laborCost.toString());
-          }
+        const prefs = await api.customers.getVehiclePreferences(selectedCustomerId, parseInt(selectedVehicleIndex, 10));
+        if (prefs) {
+          if (prefs.ppfCategory) setPpfCategory(prefs.ppfCategory);
+          if (prefs.ppfVehicleType) setPpfVehicleType(prefs.ppfVehicleType);
+          if (prefs.ppfWarranty) setPpfWarranty(prefs.ppfWarranty);
+          if (prefs.laborCost) setLaborCost(prefs.laborCost.toString());
         }
       } catch (error) {
-        // No previous service found, keep fields empty
+        // No preferences found, try to get last job
+        try {
+          const lastJob = await api.customers.getLastService(selectedCustomerId, parseInt(selectedVehicleIndex, 10));
+          if (lastJob && lastJob.serviceItems && lastJob.serviceItems.length > 0) {
+            const ppfService = lastJob.serviceItems.find((item: any) => item.name.startsWith('PPF'));
+            if (ppfService) {
+              setPpfCategory(ppfService.category || '');
+              setPpfVehicleType(ppfService.vehicleType || '');
+              setPpfWarranty(ppfService.warranty || '');
+            }
+            
+            const otherServices = lastJob.serviceItems.filter((item: any) => !item.name.startsWith('PPF'));
+            if (otherServices.length > 0) {
+              setSelectedOtherServices(otherServices.map((item: any) => ({
+                name: item.name,
+                vehicleType: item.vehicleType || '',
+                price: item.price || 0,
+                category: item.category,
+                warranty: item.warranty
+              })));
+            }
+            
+            if (lastJob.laborCost) {
+              setLaborCost(lastJob.laborCost.toString());
+            }
+          }
+        } catch (err) {
+          // No service history either
+        }
       } finally {
         setIsLoadingLastService(false);
       }
     };
     
-    loadLastService();
+    loadVehiclePreferences();
   }, [selectedCustomerId, selectedVehicleIndex]);
 
   useEffect(() => {

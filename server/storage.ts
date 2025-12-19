@@ -15,6 +15,7 @@ export interface IStorage {
   getJobsByCustomer(customerId: string): Promise<IJob[]>;
   getJobsByStage(stage: JobStage): Promise<IJob[]>;
   getLastJobForVehicle(customerId: string, vehicleIndex: number): Promise<IJob | null>;
+  getVehicleServicePreferences(customerId: string, vehicleIndex: number): Promise<any | null>;
   createJob(data: Partial<IJob>): Promise<IJob>;
   updateJob(id: string, data: Partial<IJob>): Promise<IJob | null>;
   updateJobStage(id: string, stage: JobStage): Promise<IJob | null>;
@@ -121,6 +122,20 @@ export class MongoStorage implements IStorage {
       customerId, 
       vehicleIndex 
     }).sort({ createdAt: -1 });
+  }
+
+  async getVehicleServicePreferences(customerId: string, vehicleIndex: number): Promise<any | null> {
+    if (!mongoose.Types.ObjectId.isValid(customerId)) return null;
+    const customer = await Customer.findById(customerId);
+    if (!customer || !customer.vehicles[vehicleIndex]) return null;
+    const vehicle = customer.vehicles[vehicleIndex];
+    return {
+      ppfCategory: vehicle.ppfCategory,
+      ppfVehicleType: vehicle.ppfVehicleType,
+      ppfWarranty: vehicle.ppfWarranty,
+      ppfPrice: vehicle.ppfPrice,
+      laborCost: vehicle.laborCost
+    };
   }
 
   async createJob(data: Partial<IJob>): Promise<IJob> {

@@ -28,6 +28,7 @@ export const api = {
     addVehicle: (id: string, vehicle: any) => request<any>(`/customers/${id}/vehicles`, { method: 'POST', body: JSON.stringify(vehicle) }),
     getJobs: (id: string) => request<any[]>(`/customers/${id}/jobs`),
     getLastService: (customerId: string, vehicleIndex: number) => request<any>(`/customers/${customerId}/vehicles/${vehicleIndex}/last-service`),
+    getVehiclePreferences: (customerId: string, vehicleIndex: number) => request<any>(`/customers/${customerId}/vehicles/${vehicleIndex}/preferences`),
   },
   
   jobs: {

@@ -13,6 +13,11 @@ export interface IVehicle {
   plateNumber: string;
   color: string;
   vin?: string;
+  ppfCategory?: string;
+  ppfVehicleType?: string;
+  ppfWarranty?: string;
+  ppfPrice?: number;
+  laborCost?: number;
 }
 
 export type CustomerStatus = 'Inquired' | 'Working' | 'Waiting' | 'Completed';
@@ -140,7 +145,12 @@ const VehicleSchema = new Schema<IVehicle>({
   year: { type: String, default: '' },
   plateNumber: { type: String, default: '' },
   color: { type: String, default: '' },
-  vin: { type: String }
+  vin: { type: String },
+  ppfCategory: { type: String },
+  ppfVehicleType: { type: String },
+  ppfWarranty: { type: String },
+  ppfPrice: { type: Number },
+  laborCost: { type: Number }
 });
 
 const CustomerSchema = new Schema<ICustomer>({

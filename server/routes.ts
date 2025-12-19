@@ -145,6 +145,16 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/customers/:customerId/vehicles/:vehicleIndex/preferences", async (req, res) => {
+    try {
+      const prefs = await storage.getVehicleServicePreferences(req.params.customerId, parseInt(req.params.vehicleIndex, 10));
+      if (!prefs) return res.status(404).json({ message: "No preferences found" });
+      res.json(prefs);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch preferences" });
+    }
+  });
+
   app.get("/api/jobs", async (req, res) => {
     try {
       const { stage } = req.query;
