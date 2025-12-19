@@ -425,7 +425,7 @@ export default function Customers() {
               {selectedServiceCustomerId && selectedServiceCustomerId !== 'new' && (
                 <div className="border-t pt-4">
                   <h4 className="font-medium mb-3">Selected Vehicle</h4>
-                  <div className="flex items-center gap-2 p-3 bg-accent/50 rounded-lg">
+                  <div className="flex items-center gap-2 p-3 bg-gray-100 rounded-lg border border-gray-200">
                     <Car className="w-5 h-5 text-muted-foreground" />
                     <div>
                       <p className="font-medium">{formData.vehicleMake} {formData.vehicleModel} ({formData.vehicleColor})</p>
@@ -546,7 +546,7 @@ export default function Customers() {
                   </div>
                   <div className="space-y-2">
                     {customer.vehicles.map((vehicle: any, i: number) => (
-                      <div key={i} className="flex items-center gap-2 p-2 bg-accent/50 rounded-lg">
+                      <div key={i} className="flex items-center gap-2 p-2 bg-gray-100 rounded-lg border border-gray-200">
                         <Car className="w-4 h-4 text-muted-foreground" />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{vehicle.make} {vehicle.model}</p>

@@ -90,7 +90,7 @@ export default function CustomerDetails() {
               {customer.service && (
                 <div>
                   <p className="font-semibold text-sm mb-1">Service</p>
-                  <div className="p-2 bg-accent/20 rounded border text-xs space-y-1">
+                  <div className="p-2 bg-gray-50 rounded border border-gray-200 text-xs space-y-1">
                     <p className="line-clamp-2">{customer.service}</p>
                     {customer.serviceCost && (
                       <div className="flex items-center gap-1 font-semibold">
@@ -111,7 +111,7 @@ export default function CustomerDetails() {
                   <p className="font-semibold text-sm mb-1">Vehicles</p>
                   <div className="space-y-1">
                     {customer.vehicles.slice(0, 2).map((vehicle: any, i: number) => (
-                      <div key={i} className="p-2 bg-accent/10 rounded border text-xs">
+                      <div key={i} className="p-2 bg-gray-50 rounded border border-gray-200 text-xs">
                         <div className="flex items-center gap-2 font-medium">
                           <Car className="w-3 h-3" />
                           <span className="truncate">{vehicle.make} {vehicle.model}</span>
@@ -192,7 +192,7 @@ export default function CustomerDetails() {
                       <p className="font-semibold text-xs mb-2">Services</p>
                       <div className="space-y-1">
                         {job.serviceItems.map((item: any, idx: number) => (
-                          <div key={idx} className="flex items-center justify-between text-xs bg-accent/10 p-2 rounded">
+                          <div key={idx} className="flex items-center justify-between text-xs bg-gray-50 p-2 rounded border border-gray-200">
                             <span className="truncate">{item.description || item.name || 'Service'}</span>
                             {item.cost && <span className="font-medium whitespace-nowrap ml-2">₹{item.cost.toLocaleString('en-IN')}</span>}
                             {item.price && <span className="font-medium whitespace-nowrap ml-2">₹{item.price.toLocaleString('en-IN')}</span>}

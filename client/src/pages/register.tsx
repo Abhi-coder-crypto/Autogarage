@@ -605,7 +605,7 @@ export default function CustomerRegistration() {
                         <Label>Selected Services</Label>
                         <div className="space-y-1">
                           {customerData.selectedOtherServices.map((svc, idx) => (
-                            <div key={idx} className="flex items-center justify-between p-2 bg-accent/20 rounded text-sm">
+                            <div key={idx} className="flex items-center justify-between p-2 bg-gray-50 rounded text-sm border border-gray-200">
                               <span>{svc.name} - ₹{svc.price.toLocaleString('en-IN')}</span>
                               <button type="button" onClick={() => setCustomerData({...customerData, selectedOtherServices: customerData.selectedOtherServices.filter((_, i) => i !== idx)})} className="text-red-500 text-xs" data-testid={`button-remove-service-${idx}`}>Remove</button>
                             </div>

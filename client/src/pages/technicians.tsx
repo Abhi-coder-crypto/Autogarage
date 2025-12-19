@@ -176,13 +176,13 @@ export default function Technicians() {
                     </Select>
                   </div>
 
-                  <div className="p-3 bg-accent/50 rounded-lg">
+                  <div className="p-3 bg-gray-100 rounded-lg border border-gray-200">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm">Active Jobs</span>
+                      <span className="text-sm text-gray-700">Active Jobs</span>
                       <Badge 
                         variant="outline"
                         className={cn(
-                          jobCount > 2 && 'border-red-500/30 text-red-400',
+                          jobCount > 2 && 'border-gray-400 text-gray-700 bg-gray-50',
                           jobCount > 0 && jobCount <= 2 && 'border-yellow-500/30 text-yellow-400',
                           jobCount === 0 && 'border-green-500/30 text-green-400'
                         )}
@@ -191,7 +191,7 @@ export default function Technicians() {
                       </Badge>
                     </div>
                     {jobCount > 2 && (
-                      <p className="text-xs text-red-400 mt-1">High workload</p>
+                      <p className="text-xs text-gray-700 mt-1">High workload</p>
                     )}
                   </div>
                 </CardContent>

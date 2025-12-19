@@ -237,7 +237,7 @@ Balance: Rs.${(selectedInvoice.totalAmount - selectedInvoice.paidAmount).toLocal
               {filteredInvoices.map((invoice: any) => (
                 <div
                   key={invoice._id}
-                  className="flex items-center justify-between p-4 bg-accent/30 rounded-lg hover:bg-accent/50 transition-colors flex-wrap gap-4"
+                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex-wrap gap-4 border border-gray-200"
                   data-testid={`invoice-item-${invoice._id}`}
                 >
                   <div className="flex items-center gap-4">
@@ -438,16 +438,16 @@ Balance: Rs.${(selectedInvoice.totalAmount - selectedInvoice.paidAmount).toLocal
                 </div>
 
                 {selectedInvoice.items?.length > 0 && (
-                  <div className="mt-3 p-3 bg-accent/30 rounded-lg space-y-1">
+                  <div className="mt-3 p-3 bg-gray-50 rounded-lg space-y-1 border border-gray-200">
                     <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Service Cost:</span>
+                      <span className="text-gray-600">Service Cost:</span>
                       <span className="flex items-center">
                         <IndianRupee className="w-3 h-3" />
                         {(selectedInvoice.items?.filter((i: any) => i.type === 'service')?.reduce((sum: number, i: any) => sum + i.total, 0) || 0).toLocaleString("en-IN")}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Items Cost:</span>
+                      <span className="text-gray-600">Items Cost:</span>
                       <span className="flex items-center">
                         <IndianRupee className="w-3 h-3" />
                         {(selectedInvoice.items?.filter((i: any) => i.type === 'material')?.reduce((sum: number, i: any) => sum + i.total, 0) || 0).toLocaleString("en-IN")}

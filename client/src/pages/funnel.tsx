@@ -261,7 +261,7 @@ export default function CustomerFunnel() {
           {selectedCustomer && (
             <div className="space-y-3">
               {/* Personal Information - Compact */}
-              <div className="p-3 bg-accent/30 rounded-lg">
+              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
                 <p className="text-xs font-semibold text-muted-foreground mb-2">PERSONAL INFORMATION</p>
                 <div className="space-y-1.5 text-sm">
                   <div className="flex items-center gap-2">
@@ -293,7 +293,7 @@ export default function CustomerFunnel() {
               </div>
 
               {/* Service Information - Compact */}
-              <div className="p-3 bg-accent/30 rounded-lg">
+              <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
                 <p className="text-xs font-semibold text-muted-foreground mb-2">SERVICE INFORMATION</p>
                 <div className="space-y-1.5 text-sm">
                   <div className="flex items-center gap-2">
@@ -330,11 +330,11 @@ export default function CustomerFunnel() {
 
               {/* Summary Stats - Compact */}
               <div className="grid grid-cols-2 gap-2 p-2">
-                <div className="p-2 bg-accent/30 rounded text-center">
+                <div className="p-2 bg-gray-50 rounded text-center border border-gray-200">
                   <p className="text-xs text-muted-foreground font-medium">Vehicles</p>
                   <p className="font-semibold text-base">{selectedCustomer.vehicles?.length || 0}</p>
                 </div>
-                <div className="p-2 bg-accent/30 rounded text-center">
+                <div className="p-2 bg-gray-50 rounded text-center border border-gray-200">
                   <p className="text-xs text-muted-foreground font-medium">Services</p>
                   <p className="font-semibold text-base">{jobs.filter((j: any) => j.customerId === selectedCustomer._id).length}</p>
                 </div>
@@ -345,7 +345,7 @@ export default function CustomerFunnel() {
                   <p className="text-sm text-muted-foreground mb-2">Vehicles</p>
                   <div className="space-y-2">
                     {selectedCustomer.vehicles.map((vehicle: any, i: number) => (
-                      <div key={i} className="flex items-center gap-2 p-2 bg-accent/50 rounded-lg">
+                      <div key={i} className="flex items-center gap-2 p-2 bg-gray-100 rounded-lg border border-gray-200">
                         <Car className="w-4 h-4 text-muted-foreground" />
                         <div className="flex-1">
                           <p className="text-sm font-medium">{vehicle.make} {vehicle.model}</p>

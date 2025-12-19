@@ -676,7 +676,7 @@ export default function CustomerService() {
                       </div>
 
                       {ppfPrice > 0 && (
-                        <div className="bg-accent/30 p-3 rounded-md">
+                        <div className="bg-gray-50 p-3 rounded-md border border-gray-200">
                           <div className="flex justify-between items-center">
                             <span className="text-sm font-medium">PPF Service Price:</span>
                             <span className="text-lg font-bold text-primary">₹{ppfPrice.toLocaleString('en-IN')}</span>
