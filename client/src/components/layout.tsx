@@ -5,17 +5,56 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/button';
 
-const navItems = [
-  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/register', label: 'Register Customers', icon: UserPlus },
-  { href: '/registered-customers', label: 'Registered Customers', icon: Filter },
-  { href: '/customer-service', label: 'Customers Service', icon: Wrench },
-  { href: '/jobs', label: 'Service Funnel', icon: Wrench },
-  { href: '/invoices', label: 'Invoices & Tracking', icon: FileText },
-  { href: '/technicians', label: 'Technicians', icon: UserCog },
-  { href: '/inventory', label: 'Inventory', icon: Package },
-  { href: '/appointments', label: 'Appointments', icon: Calendar },
-  { href: '/settings', label: 'Settings', icon: Settings },
+const navSections = [
+  {
+    title: 'Main',
+    color: 'from-slate-50 to-transparent',
+    textColor: 'text-slate-700',
+    items: [
+      { href: '/', label: 'Dashboard', icon: LayoutDashboard },
+    ]
+  },
+  {
+    title: 'Customers',
+    color: 'from-blue-50 to-transparent',
+    textColor: 'text-blue-700',
+    borderColor: 'border-l-4 border-blue-400',
+    items: [
+      { href: '/register', label: 'Register Customers', icon: UserPlus },
+      { href: '/registered-customers', label: 'Registered Customers', icon: Filter },
+    ]
+  },
+  {
+    title: 'Service',
+    color: 'from-green-50 to-transparent',
+    textColor: 'text-green-700',
+    borderColor: 'border-l-4 border-green-400',
+    items: [
+      { href: '/customer-service', label: 'Customers Service', icon: Wrench },
+      { href: '/jobs', label: 'Service Funnel', icon: Wrench },
+      { href: '/invoices', label: 'Invoices & Tracking', icon: FileText },
+    ]
+  },
+  {
+    title: 'Operations',
+    color: 'from-orange-50 to-transparent',
+    textColor: 'text-orange-700',
+    borderColor: 'border-l-4 border-orange-400',
+    items: [
+      { href: '/technicians', label: 'Technicians', icon: UserCog },
+      { href: '/inventory', label: 'Inventory', icon: Package },
+      { href: '/appointments', label: 'Appointments', icon: Calendar },
+    ]
+  },
+  {
+    title: 'Settings',
+    color: 'from-purple-50 to-transparent',
+    textColor: 'text-purple-700',
+    borderColor: 'border-l-4 border-purple-400',
+    items: [
+      { href: '/settings', label: 'Settings', icon: Settings },
+    ]
+  },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -56,31 +95,40 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-            {navItems.map((item) => {
-              const isActive = location === item.href || (item.href !== '/' && location.startsWith(item.href + '/'));
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setSidebarOpen(false)}
-                  data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
-                >
-                  <div
-                    className={cn(
-                      "flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 cursor-pointer text-sm font-medium",
-                      isActive
-                        ? "bg-gradient-to-r from-primary to-primary/90 text-white shadow-md"
-                        : "text-slate-700 hover:bg-slate-100"
-                    )}
-                  >
-                    <Icon className="w-5 h-5 flex-shrink-0" />
-                    <span>{item.label}</span>
-                  </div>
-                </Link>
-              );
-            })}
+          <nav className="flex-1 p-4 space-y-4 overflow-y-auto">
+            {navSections.map((section) => (
+              <div key={section.title} className={cn("bg-gradient-to-r", section.color, "rounded-lg p-3", section.borderColor)}>
+                <h3 className={cn("text-xs font-bold uppercase tracking-wider mb-2", section.textColor)}>
+                  {section.title}
+                </h3>
+                <div className="space-y-1">
+                  {section.items.map((item) => {
+                    const isActive = location === item.href || (item.href !== '/' && location.startsWith(item.href + '/'));
+                    const Icon = item.icon;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setSidebarOpen(false)}
+                        data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
+                      >
+                        <div
+                          className={cn(
+                            "flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 cursor-pointer text-sm font-medium",
+                            isActive
+                              ? "bg-gradient-to-r from-primary to-primary/90 text-white shadow-md"
+                              : "text-slate-700 hover:bg-white/60"
+                          )}
+                        >
+                          <Icon className="w-5 h-5 flex-shrink-0" />
+                          <span>{item.label}</span>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </nav>
 
           {/* User Profile Section */}
