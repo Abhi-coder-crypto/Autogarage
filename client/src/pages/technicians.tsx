@@ -13,9 +13,9 @@ import { Plus, Wrench, Phone, Briefcase } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const STATUS_COLORS: Record<string, string> = {
-  'Available': 'bg-green-500/20 text-green-400 border-green-500/30',
-  'Busy': 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-  'Off': 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+  'Available': 'bg-gray-200 text-black border-gray-300',
+  'Busy': 'bg-gray-200 text-black border-gray-300',
+  'Off': 'bg-gray-200 text-black border-gray-300'
 };
 
 export default function Technicians() {

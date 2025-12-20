@@ -34,14 +34,14 @@ const PHASE_COLORS: Record<string, string> = {
   Inquired: "bg-blue-100 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300",
   Working: "bg-orange-100 dark:bg-orange-950/50 text-orange-700 dark:text-orange-300",
   Waiting: "bg-yellow-100 dark:bg-yellow-950/50 text-yellow-700 dark:text-yellow-300",
-  Completed: "bg-green-100 dark:bg-green-950/50 text-green-700 dark:text-green-300",
+  Completed: "bg-gray-100 dark:bg-gray-950/50 text-black dark:text-black",
 };
 
 const STAGE_BG_COLORS: Record<string, string> = {
   Inquired: "bg-blue-50 dark:bg-blue-950/20",
   Working: "bg-orange-50 dark:bg-orange-950/20",
   Waiting: "bg-yellow-50 dark:bg-yellow-950/20",
-  Completed: "bg-green-50 dark:bg-green-950/20",
+  Completed: "bg-gray-50 dark:bg-gray-950/20",
 };
 
 export default function CustomerFunnel() {

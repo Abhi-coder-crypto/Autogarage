@@ -30,7 +30,7 @@ const STATUS_COLORS: Record<string, string> = {
   Inquired: "bg-blue-100 text-blue-700 border-blue-200",
   Working: "bg-orange-100 text-orange-700 border-orange-200",
   Waiting: "bg-yellow-100 text-yellow-700 border-yellow-200",
-  Completed: "bg-green-100 text-green-700 border-green-200",
+  Completed: "bg-gray-100 text-black border-gray-300",
 };
 
 export default function Customers() {
