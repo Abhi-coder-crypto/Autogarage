@@ -2,7 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { MetricCard } from "@/components/metric-card";
+import { useAuth } from "@/contexts/auth-context";
 import {
   IndianRupee,
   Package,
@@ -12,6 +14,7 @@ import {
   Clock,
   Activity,
   Zap,
+  LogOut,
 } from "lucide-react";
 import {
   BarChart,
@@ -143,6 +146,8 @@ export default function Dashboard() {
   const completedJobs = jobs.filter((j: any) => j.stage === "Completed").length;
   const jobCompletion = jobs.length > 0 ? Math.round((completedJobs / jobs.length) * 100) : 0;
 
+  const { user, logout } = useAuth();
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -156,6 +161,28 @@ export default function Dashboard() {
           </h1>
           <p className="text-slate-600 mt-3 font-medium">Welcome back! Here's your garage performance</p>
         </div>
+        {user && (
+          <div className="flex items-center gap-3 bg-gradient-to-br from-slate-100 to-slate-50 rounded-lg p-3 border border-slate-200">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center flex-shrink-0">
+              <span className="text-primary font-bold text-sm">
+                {user.name?.charAt(0) || 'A'}
+              </span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-slate-900 text-sm truncate">{user.name}</p>
+              <p className="text-slate-600 text-xs truncate">{user.email}</p>
+            </div>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="gap-2 text-slate-700 hover:bg-slate-200"
+              onClick={logout}
+              data-testid="button-logout"
+            >
+              <LogOut className="w-4 h-4" />
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Metric Cards Grid */}
