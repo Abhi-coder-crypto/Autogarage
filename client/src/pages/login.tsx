@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/auth-context';
-import { Car, Lock, Mail, Zap, Users, TrendingUp } from 'lucide-react';
+import { Lock, Mail } from 'lucide-react';
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -68,21 +68,6 @@ export default function Login() {
       {/* Login Dialog */}
       <div className="relative z-10 w-full max-w-md">
         <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 dark:border-slate-700/20 overflow-hidden">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-red-600 to-red-700 px-6 py-8 text-white">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-white/20 backdrop-blur-md rounded-lg border border-white/30">
-                <Car className="w-6 h-6" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold font-display">AutoGarage</h1>
-                <p className="text-white/80 text-xs">CRM System</p>
-              </div>
-            </div>
-            <h2 className="text-3xl font-bold font-display">Welcome Back</h2>
-            <p className="text-white/90 text-sm mt-2">Sign in to your garage management account</p>
-          </div>
-
           {/* Form Content */}
           <div className="p-8 space-y-6">
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -144,11 +129,6 @@ export default function Login() {
                 <span className="font-semibold text-foreground">Autogarage</span>
               </p>
             </div>
-          </div>
-
-          {/* Footer */}
-          <div className="px-8 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700 text-center text-xs text-muted-foreground">
-            <p>© 2025 AutoGarage CRM. All rights reserved.</p>
           </div>
         </div>
       </div>
