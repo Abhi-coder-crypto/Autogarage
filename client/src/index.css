@@ -96,51 +96,51 @@
 }
 
 :root {
-  /* Light Theme with Red Accents - Professional Red & White Look */
-  --background: 0 0% 98%; /* Light white background */
-  --foreground: 0 0% 15%; /* Dark text */
+  /* Clean, Minimal Light Theme - Neutral Slate & Gray */
+  --background: 210 17% 98%; /* Very light neutral background */
+  --foreground: 210 11% 20%; /* Dark neutral text */
 
   --card: 0 0% 100%; /* Pure white cards */
-  --card-foreground: 0 0% 15%; /* Dark text on cards */
+  --card-foreground: 210 11% 20%; /* Dark text on cards */
 
   --popover: 0 0% 100%; /* White popovers */
-  --popover-foreground: 0 0% 15%;
+  --popover-foreground: 210 11% 20%;
 
-  --primary: 0 84% 60%; /* Red accent */
+  --primary: 210 11% 40%; /* Neutral slate primary */
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 0 0% 96%; /* Light grey */
-  --secondary-foreground: 0 0% 15%;
+  --secondary: 210 17% 94%; /* Light neutral gray */
+  --secondary-foreground: 210 11% 20%;
 
-  --muted: 0 0% 92%;
-  --muted-foreground: 0 0% 50%;
+  --muted: 210 11% 88%;
+  --muted-foreground: 210 11% 45%;
 
-  --accent: 0 84% 60%; /* Red accent */
+  --accent: 210 11% 40%; /* Neutral slate accent */
   --accent-foreground: 0 0% 100%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 
-  --border: 0 0% 90%; /* Subtle borders */
+  --border: 210 17% 91%; /* Subtle neutral borders */
   --input: 0 0% 100%; /* White input backgrounds */
-  --ring: 0 84% 60%;
+  --ring: 210 11% 40%;
 
   --radius: 0.5rem;
 
-  --chart-1: 217 91% 60%; /* Blue */
+  --chart-1: 210 11% 40%; /* Slate */
   --chart-2: 142 76% 36%; /* Green */
   --chart-3: 38 92% 50%; /* Orange */
   --chart-4: 262 83% 58%; /* Purple */
-  --chart-5: 0 84% 60%; /* Red */
+  --chart-5: 217 91% 60%; /* Blue */
 
-  --sidebar: 248 24% 14%; /* Dark slate background */
-  --sidebar-foreground: 210 40% 96%; /* Light text */
-  --sidebar-primary: 217 91% 60%; /* Blue for active items */
+  --sidebar: 210 11% 98%; /* Very light sidebar */
+  --sidebar-foreground: 210 11% 20%; /* Dark text */
+  --sidebar-primary: 210 11% 40%; /* Slate for active items */
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 248 24% 24%; /* Slightly lighter hover state */
-  --sidebar-accent-foreground: 210 40% 96%;
-  --sidebar-border: 248 24% 20%;
-  --sidebar-ring: 217 91% 60%;
+  --sidebar-accent: 210 17% 92%; /* Light hover state */
+  --sidebar-accent-foreground: 210 11% 20%;
+  --sidebar-border: 210 17% 91%;
+  --sidebar-ring: 210 11% 40%;
 }
 
 @layer base {
