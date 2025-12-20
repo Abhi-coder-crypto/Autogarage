@@ -25,29 +25,29 @@ export function MetricCard({
 }: MetricCardProps) {
   return (
     <div 
-      className="bg-gradient-to-br from-white to-slate-50 border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-lg hover:border-primary/50 transition-all duration-300 group overflow-hidden relative"
+      className="bg-gradient-to-br from-white to-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-lg hover:border-primary/50 transition-all duration-300 group overflow-hidden relative"
       data-testid={testId}
     >
       {/* Accent gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       
       <div className="relative z-10">
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex items-start justify-between mb-3">
           <div className="flex-1">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">{title}</p>
-            <h3 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">{value}</h3>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-0.5">{title}</p>
+            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">{value}</h3>
             {description && (
-              <p className="text-xs text-slate-600 mt-2">{description}</p>
+              <p className="text-xs text-slate-600 mt-1">{description}</p>
             )}
           </div>
-          <div className="p-3 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg ml-3 flex-shrink-0 group-hover:from-primary/15 group-hover:to-primary/10 transition-colors duration-300">
-            <Icon className="w-6 h-6 text-primary" />
+          <div className="p-2 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg ml-2 flex-shrink-0 group-hover:from-primary/15 group-hover:to-primary/10 transition-colors duration-300">
+            <Icon className="w-5 h-5 text-primary" />
           </div>
         </div>
 
         {progress !== undefined && (
-          <div className="mt-6">
-            <div className="relative w-28 h-28 mx-auto">
+          <div className="mt-4">
+            <div className="relative w-20 h-20 mx-auto">
               <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                 {/* Background circle */}
                 <circle
@@ -73,7 +73,7 @@ export function MetricCard({
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-2xl font-bold text-slate-900">{progress}%</span>
+                <span className="text-lg font-bold text-slate-900">{progress}%</span>
               </div>
             </div>
           </div>
