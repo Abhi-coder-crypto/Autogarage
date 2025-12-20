@@ -437,18 +437,23 @@ export default function CustomerService() {
 
   return (
     <div className="space-y-8">
-      <div className="pb-6 border-b border-slate-200">
-        <h1 className="font-display text-5xl font-bold tracking-tight text-slate-900">Customer Service</h1>
-        <p className="text-slate-600 mt-3 font-medium">Create and manage services for your customers</p>
+      <div className="pb-8 border-b border-slate-200">
+        <div className="inline-block px-4 py-2 bg-gradient-to-r from-green-100 to-green-50 border border-green-200 rounded-lg mb-4">
+          <span className="text-xs font-bold text-green-700 uppercase tracking-wider">Service Management</span>
+        </div>
+        <h1 className="font-display text-5xl font-bold tracking-tight text-slate-900 mb-2">Customer Service</h1>
+        <p className="text-slate-600 text-lg font-medium">Create and manage professional services for your customers with detailed tracking</p>
       </div>
 
-      <Card className="bg-gradient-to-br from-white to-slate-50 border border-slate-200 shadow-sm">
-        <CardHeader className="pb-4 border-b border-slate-200 bg-gradient-to-r from-primary/5 to-transparent">
-          <CardTitle className="flex items-center gap-3 text-lg text-slate-900 font-semibold">
-            <Plus className="w-5 h-5 text-primary" />
+      <Card className="bg-gradient-to-br from-white via-slate-50 to-slate-50 border border-slate-200 shadow-lg overflow-hidden">
+        <CardHeader className="pb-4 border-b border-slate-200 bg-gradient-to-r from-green-500/10 via-green-500/5 to-transparent">
+          <CardTitle className="flex items-center gap-3 text-xl text-slate-900 font-bold">
+            <div className="p-2.5 bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow-lg">
+              <Plus className="w-5 h-5 text-white" />
+            </div>
             Create New Service
           </CardTitle>
-          <p className="text-sm text-slate-600 mt-2">Select a customer, vehicle, and services to create a new job</p>
+          <p className="text-sm text-slate-600 mt-3">Select a customer, vehicle, and services to create a new job</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -904,8 +909,8 @@ export default function CustomerService() {
                   </div>
                 )}
 
-                <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 space-y-2">
-                  <h4 className="font-semibold text-sm text-gray-700">Cost Summary</h4>
+                <div className="border-2 border-gradient-to-r from-green-200 to-emerald-200 rounded-xl p-5 bg-gradient-to-br from-green-50 via-emerald-50 to-slate-50 space-y-3">
+                  <h4 className="font-bold text-base text-slate-900">Cost Summary</h4>
                   
                   {ppfPrice > 0 && (
                     <div className="flex justify-between text-sm">
@@ -960,14 +965,14 @@ export default function CustomerService() {
               </div>
             </div>
 
-            <div className="flex justify-end gap-4">
-              <Button type="button" variant="outline" onClick={resetForm}>
+            <div className="flex justify-end gap-4 pt-4">
+              <Button type="button" variant="outline" onClick={resetForm} className="border-slate-300">
                 <X className="w-4 h-4 mr-2" />
-                Clear
+                Clear Form
               </Button>
               <Button
                 type="submit"
-                className="bg-primary"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg"
                 disabled={createJobMutation.isPending || !selectedCustomerId || !selectedVehicleIndex || (ppfPrice <= 0 && selectedOtherServices.length === 0 && !parsedLaborCost)}
                 data-testid="button-create-service"
               >

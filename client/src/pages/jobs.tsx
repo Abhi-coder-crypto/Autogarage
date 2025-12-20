@@ -114,24 +114,27 @@ export default function ServiceFunnel() {
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-3xl font-bold tracking-tight" data-testid="text-service-funnel-title">
+    <div className="space-y-8">
+      <div className="pb-6 border-b border-slate-200">
+        <div className="inline-block px-4 py-2 bg-gradient-to-r from-blue-100 to-blue-50 border border-blue-200 rounded-lg mb-4">
+          <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">Real-Time Pipeline</span>
+        </div>
+        <h1 className="font-display text-5xl font-bold tracking-tight text-slate-900 mb-2" data-testid="text-service-funnel-title">
           Service Funnel
         </h1>
-        <p className="text-muted-foreground mt-1">
-          Track service status, send WhatsApp updates automatically, and manage invoices
+        <p className="text-slate-600 text-lg font-medium">
+          Track service status in real-time, send WhatsApp updates automatically, and manage invoices
         </p>
       </div>
 
       {/* Funnel Overview */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {JOB_STAGES.map(stage => (
-          <Card key={stage} className={cn("card-modern", STAGE_BG_COLORS[stage])}>
-            <CardContent className="p-3">
-              <div className="flex flex-col items-center gap-2 text-center">
-                <Badge className={cn(STAGE_BADGE_COLORS[stage], "text-xs")}>{stage}</Badge>
-                <span className="text-3xl font-bold">{groupedJobs[stage]?.length || 0}</span>
+          <Card key={stage} className={cn("card-modern border-2 shadow-md hover:shadow-lg transition-all duration-300", STAGE_BG_COLORS[stage])}>
+            <CardContent className="p-4">
+              <div className="flex flex-col items-center gap-3 text-center">
+                <Badge className={cn(STAGE_BADGE_COLORS[stage], "text-xs font-bold")}>{stage}</Badge>
+                <span className="text-4xl font-bold text-slate-900">{groupedJobs[stage]?.length || 0}</span>
               </div>
             </CardContent>
           </Card>
@@ -139,19 +142,19 @@ export default function ServiceFunnel() {
       </div>
 
       {/* Search and Filter */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col sm:flex-row gap-4 bg-gradient-to-r from-slate-50 to-slate-100 p-6 rounded-xl border border-slate-200">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
           <Input
             placeholder="Search by customer, vehicle, or plate..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-10"
+            className="pl-12 bg-white border-slate-300 rounded-lg shadow-sm"
             data-testid="input-search-jobs"
           />
         </div>
         <Select value={stageFilter} onValueChange={setStageFilter}>
-          <SelectTrigger className="w-full sm:w-48" data-testid="select-stage-filter">
+          <SelectTrigger className="w-full sm:w-48 bg-white border-slate-300 rounded-lg shadow-sm" data-testid="select-stage-filter">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -164,7 +167,7 @@ export default function ServiceFunnel() {
       </div>
 
       {/* Service List */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         {isLoading ? (
           <div className="text-center py-8 text-muted-foreground">Loading services...</div>
         ) : filteredJobs.length === 0 ? (
@@ -175,31 +178,34 @@ export default function ServiceFunnel() {
           filteredJobs.map((job: any) => (
             <Card 
               key={job._id} 
-              className="card-modern"
+              className="card-modern border-slate-200 shadow-md hover:shadow-xl transition-all duration-300 hover:border-slate-300 bg-gradient-to-r from-white to-slate-50"
               data-testid={`service-item-${job._id}`}
             >
-              <CardContent className="p-4">
+              <CardContent className="p-5">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="flex items-start gap-4 flex-1">
-                    <div className="p-3 bg-gray-100 rounded-xl">
-                      <Car className="w-6 h-6 text-primary" />
+                    <div className="p-3.5 bg-gradient-to-br from-blue-100 to-blue-50 rounded-xl border border-blue-200 shadow-sm">
+                      <Car className="w-6 h-6 text-blue-600" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-semibold">{job.vehicleName}</h3>
-                        <Badge variant="outline" className="text-xs">{job.plateNumber}</Badge>
+                        <h3 className="font-bold text-lg text-slate-900">{job.vehicleName}</h3>
+                        <Badge variant="outline" className="text-xs font-semibold bg-slate-100 border-slate-300">{job.plateNumber}</Badge>
                       </div>
-                      <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <User className="w-3 h-3" />
+                      <div className="flex items-center gap-4 mt-2 text-sm text-slate-600">
+                        <span className="flex items-center gap-1.5 font-medium">
+                          <User className="w-4 h-4 text-slate-400" />
                           {job.customerName}
                         </span>
                         {job.technicianName && (
-                          <span>Assigned: {job.technicianName}</span>
+                          <span className="flex items-center gap-1.5 font-medium">
+                            <span className="inline-block w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                            Assigned: {job.technicianName}
+                          </span>
                         )}
                       </div>
                       {job.notes && (
-                        <p className="text-sm text-muted-foreground mt-2 truncate">{job.notes}</p>
+                        <p className="text-sm text-slate-600 mt-2 italic bg-slate-100 px-3 py-1.5 rounded-lg">{job.notes}</p>
                       )}
                     </div>
                   </div>
@@ -231,15 +237,15 @@ export default function ServiceFunnel() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between gap-4 mt-4 pt-4 border-t border-border text-sm flex-wrap">
-                  <div className="flex items-center gap-4">
-                    <div>
-                      <span className="text-muted-foreground">Service Cost: </span>
-                      <span className="font-semibold flex items-center"><IndianRupee className="w-3 h-3" />{job.totalAmount.toLocaleString('en-IN')}</span>
+                <div className="flex items-center justify-between gap-4 mt-5 pt-5 border-t border-slate-200 text-sm flex-wrap">
+                  <div className="flex items-center gap-6">
+                    <div className="bg-orange-50 px-3 py-2 rounded-lg border border-orange-200">
+                      <span className="text-orange-700 text-xs font-semibold block">Service Cost</span>
+                      <span className="font-bold text-orange-900 flex items-center text-sm"><IndianRupee className="w-4 h-4" />{job.totalAmount.toLocaleString('en-IN')}</span>
                     </div>
-                    <div>
-                      <span className="text-muted-foreground">Final Amount: </span>
-                      <span className="font-semibold text-green-500 flex items-center"><IndianRupee className="w-3 h-3" />{job.paidAmount.toLocaleString('en-IN')}</span>
+                    <div className="bg-green-50 px-3 py-2 rounded-lg border border-green-200">
+                      <span className="text-green-700 text-xs font-semibold block">Final Amount</span>
+                      <span className="font-bold text-green-700 flex items-center text-sm"><IndianRupee className="w-4 h-4" />{job.paidAmount.toLocaleString('en-IN')}</span>
                     </div>
                     <Badge 
                       variant="outline" 
