@@ -101,6 +101,7 @@ export default function RegisteredCustomers() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <h3 className="font-semibold text-lg text-slate-900 group-hover:text-primary transition-colors">{customer.name}</h3>
+                      <p className="text-xs text-slate-500 mt-0.5 font-mono">ID: {customer._id}</p>
                       <p className="text-sm text-slate-600 mt-1">{customer.phone}</p>
                     </div>
                     {customer.vehicles && customer.vehicles.length > 0 && (
@@ -128,19 +129,31 @@ export default function RegisteredCustomers() {
 
                   {customer.vehicles && customer.vehicles.length > 0 && (
                     <div className="pt-2 border-t border-slate-200">
-                      <div className="flex items-center gap-2 text-xs text-slate-600 mb-2 font-medium">
+                      <div className="flex items-center gap-2 text-xs text-slate-600 mb-3 font-medium">
                         <Car className="w-4 h-4" />
                         Vehicles
                       </div>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="space-y-3">
                         {customer.vehicles.slice(0, 2).map((vehicle: any, idx: number) => (
-                          <div key={idx} className="px-2.5 py-1.5 bg-slate-100 rounded border border-slate-200 text-xs font-medium text-slate-900">
-                            {vehicle.make} {vehicle.model}
+                          <div key={idx} className="space-y-2">
+                            {vehicle.image && (
+                              <div className="relative w-full h-32 bg-slate-200 rounded-lg overflow-hidden border border-slate-300">
+                                <img 
+                                  src={vehicle.image} 
+                                  alt={`${vehicle.make} ${vehicle.model}`}
+                                  className="w-full h-full object-cover"
+                                  data-testid={`img-vehicle-${idx}`}
+                                />
+                              </div>
+                            )}
+                            <div className="px-2.5 py-1.5 bg-slate-100 rounded border border-slate-200 text-xs font-medium text-slate-900">
+                              {vehicle.make} {vehicle.model} {vehicle.year ? `(${vehicle.year})` : ''} - {vehicle.plateNumber}
+                            </div>
                           </div>
                         ))}
                         {customer.vehicles.length > 2 && (
                           <div className="px-2.5 py-1.5 bg-slate-100 rounded border border-slate-200 text-xs font-medium text-slate-600">
-                            +{customer.vehicles.length - 2} more
+                            +{customer.vehicles.length - 2} more vehicle(s)
                           </div>
                         )}
                       </div>

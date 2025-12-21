@@ -246,7 +246,10 @@ export default function CustomerRegistration() {
     chassisNumber: "",
     color: "",
     vehicleType: "",
+    image: "" as string | undefined,
   });
+
+  const [vehicleImagePreview, setVehicleImagePreview] = useState<string>("");
 
   const createCustomerMutation = useMutation({
     mutationFn: api.customers.create,
@@ -259,6 +262,19 @@ export default function CustomerRegistration() {
       toast({ title: "Failed to register customer", variant: "destructive" });
     },
   });
+
+  const handleVehicleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setVehicleData({ ...vehicleData, image: base64String });
+        setVehicleImagePreview(base64String);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = () => {
     const selectedService = customerData.ppfCategory 
@@ -298,6 +314,7 @@ export default function CustomerRegistration() {
           plateNumber: vehicleData.plateNumber,
           color: vehicleData.color,
           vin: vehicleData.chassisNumber,
+          image: vehicleData.image,
           ppfCategory: customerData.ppfCategory,
           ppfVehicleType: customerData.ppfVehicleType,
           ppfWarranty: customerData.ppfWarranty,
@@ -790,6 +807,27 @@ export default function CustomerRegistration() {
                     placeholder="e.g., White, Black"
                     data-testid="input-color"
                   />
+                </div>
+
+                <div className="md:col-span-2 space-y-2">
+                  <Label>Vehicle Image</Label>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleVehicleImageChange}
+                    placeholder="Upload vehicle photo"
+                    data-testid="input-vehicle-image"
+                  />
+                  {vehicleImagePreview && (
+                    <div className="mt-3 relative w-full h-48 bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
+                      <img 
+                        src={vehicleImagePreview} 
+                        alt="Vehicle preview" 
+                        className="w-full h-full object-cover"
+                        data-testid="img-vehicle-preview"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
